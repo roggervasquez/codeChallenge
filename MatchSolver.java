@@ -30,7 +30,7 @@ public class MatchSolver
   public void matchListing(Listing listing)
   {
       int bestIndex =-1;  // keeps track which index of the productsListing is the best match so far.
-      double bestScore=0.0;  // Keeps the information of the best product that match the listing
+      double bestScore=0.0;  // Keeps the information of the best score found at the moment of a matching
       // iterate the list of productListings
       for (ProductListing pl : this.matchResults.productsListings)
       {
