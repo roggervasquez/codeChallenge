@@ -7,4 +7,4 @@ rm *.class
 javac -cp ./minimal-json-0.9.4.jar:. Challenge.java
 
 #Run the application, pass the 2 files as parameters,
-java -cp  ./minimal-json-0.9.4.jar:. Challenge products.txt listings.txt
+java -cp  ./minimal-json-0.9.4.jar:. Challenge products.txt listings_2.txt

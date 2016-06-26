@@ -125,6 +125,9 @@ public static void main(String[] args)
  private static void mapJsonToListing (Listing l, JsonObject jsonObject)
  {
    l.title = jsonObject.get( "title" )!=null ? jsonObject.get( "title" ).asString() : "";
+   l.manufacturer = jsonObject.get( "manufacturer" )!=null ? jsonObject.get( "manufacturer" ).asString() : "";
+   l.currency = jsonObject.get( "currency" )!=null ? jsonObject.get( "currency" ).asString() : "";
+   l.price=jsonObject.get( "price" )!=null ? jsonObject.get( "price" ).asString() : "";
 
  }
 

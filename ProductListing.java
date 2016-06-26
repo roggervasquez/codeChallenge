@@ -6,8 +6,8 @@ import java.util.*;
 */
 public class ProductListing
 {
-      private Product product;
-      private ArrayList <Listing> listings; // Listings associated to a specific product
+      public Product product;
+      public ArrayList <Listing> listings; // Listings associated to a specific product
 
       public ProductListing()
       {

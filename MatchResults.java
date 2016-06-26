@@ -1,5 +1,5 @@
 /**
-* Class that represents the results of the matching solver 
+* Class that represents the results of the matching solver
 */
 
 import java.util.*;
@@ -7,8 +7,8 @@ import java.util.*;
 
 public class MatchResults
 {
-   private ArrayList<ProductListing> productsListings;
-   private ArrayList<Listing>  listingsNotAssigned;
+   public ArrayList<ProductListing> productsListings;
+   public ArrayList<Listing>  listingsNotAssigned;
 
 
    public MatchResults()
