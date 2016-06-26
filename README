@@ -1,0 +1,25 @@
+Code Challenge
+
+Match the best way listings of products(listings.txt) to products defined in products.txt
+
+Instructions
+
+1. Clone Repo
+2. Run go.sh
+"sh go.sh"   (be sure to have java sdk installed and javac in the path)
+
+--------------------------------
+Pre-Conditions.
+
+The program uses minimal-json-0.9.4
+
+Assumes that in the same folder exists the 2 input files :
+
+products.txt
+listings.txt
+
+if not the program terminates.
+--------------------------------
+Produces a file
+results.txt
+unmatchlistings.txt
