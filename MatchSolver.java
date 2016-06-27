@@ -9,7 +9,11 @@ public class MatchSolver
 {
 
   private MatchResults  matchResults;
-
+  public MatchResults getMatchResults()
+  {
+      return matchResults;
+  }
+ // Constructor
   public MatchSolver(List<Product> products)
   {
     //Fill the matchResults with the whole list of products but with emppty listings for each one, matching has not started.
@@ -35,16 +39,21 @@ public class MatchSolver
       for (ProductListing pl : this.matchResults.productsListings)
       {
          if (this.isSameManufacturer(pl.product,listing))
-         {  // Is the same manufacturer then is a candidate, to look more into it ..
+         {  // Is the same manufacturer then is a candidate, to look more into it .. bestScore will decide the best match
 
          }
          //else  don't even mind, is not from the same manufacturer, no matther how similar the product is
          //CyberShot Camera from sony is not the same as CyberShot camera from Nikon, no matter that in the lising Cysbershot Camera is a common string
       }
-      // if we got to this point and bestindex = -1, then we do not find any product to match the listing pass by parameter, so we need to add it to the not Assigned listings
-      if(bestIndex==-1)
+
+      if(bestIndex!=-1)
       {
-         this.matchResults.listingsNotAssigned.add(listing);
+         // we got a match, and the Index tells us the position of the best product it matches. SO need to add the listing to it
+         this.matchResults.productsListings.get(bestIndex).listings.add(listing); // add the listing to that product in it's list of listings.
+      }
+      else   // if we got to this point and bestindex = -1, then we do not find any product to match the listing pass by parameter, so we need to add it to the not Assigned listings
+      {
+        this.matchResults.listingsNotAssigned.add(listing);
       }
   }
 
@@ -62,8 +71,5 @@ public class MatchSolver
      }
     return false;
   }
-  public MatchResults getMatchResults()
-  {
-      return matchResults;
-  }
+
 }
