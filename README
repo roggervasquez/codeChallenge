@@ -20,6 +20,6 @@ listings.txt
 
 if not the program terminates.
 --------------------------------
-Produces a file
+Produces 2 files
 results.txt
 unmatchlistings.txt

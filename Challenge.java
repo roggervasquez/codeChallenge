@@ -23,6 +23,12 @@ public class Challenge
 
 public static void main(String[] args)
  {
+   if (true)
+   {
+      testSameManufacturer();
+      return;
+    }
+
 
    MatchSolver matchSolver;
    List<Product> listOfProducts=null;
@@ -32,6 +38,7 @@ public static void main(String[] args)
        System.err.println("Error: Products file cannot be loaded, exiting ");
        return;
    }
+
    // Main Loop, where basically instantiates a MatchSolver passing a list of products to work with.
    // Then read line by line the listings (instead of loading them all in a collection) , so we don't waste memory for the moment
    // and based on a greedy approach, matchSolver will try to match the current listing with a product (list of products), in case it does, matchSolver stores
@@ -131,6 +138,32 @@ public static void main(String[] args)
 
  }
 
+public static void  testSameManufacturer()
+{
+   Product p = new Product();
+   Listing l = new Listing();
+
+   p.product_name="";
+   p.manufacturer ="SONY";
+   p.family="";
+   p.model="";
+   p.announced_date="";
+
+   l.title="Sony T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
+   l.manufacturer="";
+   l.currency="";
+   l.price="";
+
+   if (MatchSolver.isSameManufacturer(p,l))
+   {
+       System.out.println("Is same manufacturer");
+   }
+   else
+   {
+        System.out.println("different");
+   }
+
+}
 
  public static void testing()
  {
