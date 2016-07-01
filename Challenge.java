@@ -23,12 +23,8 @@ public class Challenge
 
 public static void main(String[] args)
  {
-   if (true)
-   {
-      testSameManufacturer();
-      return;
-    }
 
+   runTests(args[2]) ; // If appropiate command line parameter, then will run some tests. 
 
    MatchSolver matchSolver;
    List<Product> listOfProducts=null;
@@ -137,56 +133,18 @@ public static void main(String[] args)
    l.price=jsonObject.get( "price" )!=null ? jsonObject.get( "price" ).asString() : "";
 
  }
-
-public static void  testSameManufacturer()
-{
-   Product p = new Product();
-   Listing l = new Listing();
-
-   p.product_name="";
-   p.manufacturer ="SONY";
-   p.family="";
-   p.model="";
-   p.announced_date="";
-
-   l.title="Sony T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
-   l.manufacturer="";
-   l.currency="";
-   l.price="";
-
-   if (MatchSolver.isSameManufacturer(p,l))
-   {
-       System.out.println("Is same manufacturer");
-   }
-   else
-   {
-        System.out.println("different");
-   }
-
-}
-
- public static void testing()
+ public static void runTests(String s)
  {
-   String s1, s2,s3;    // The strings to find the edit distance between
+   if (s!=null && s.equals("runtests") ) // Just to run some tests ... if not pass by parameter, runs normally.
+   {
+      TestClass test = new TestClass();
+      test.runAllTests();
+      return;
+    }
 
-
-   s1 = "Fuji_PinePix_T205" ;
-   s2 = "Fuji_T205_PinePix" ;
-   s3 = "Fuji" ;
-
-
-   int d = Algorithms.editDistance(s1,s2);
-
-   double db = Algorithms.similarity(s1,s3);
-   double other = Algorithms.compareStrings(s1,s3);
-     System.out.println("Distance:" + d);
-     System.out.println("Common xx:" + Algorithms.longestCommonSubstring(s1,s2));
-     System.out.println("similarity:" + db);
-        System.out.println("Compare:" + other);
 
 
  }
-
 
 
 }
