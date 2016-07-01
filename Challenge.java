@@ -17,15 +17,21 @@ public class Challenge
 {
  /**
   * The main method will receive the name of 2 input files
-  * @param args 2 parameters, name of 2 input files, the products and the lisitngs
+  * @param args 3 parameters, name of 2 input files, the products and the lisitngs and a option to see if running some tests
   * @return Nothing, but produces a new file results.txt and a unmatchlistings.txt
   */
 
 public static void main(String[] args)
  {
+   if (args.length<2)
+   { System.err.println("At least 2 parameters are needed, products file name, listings filename");
+     return;
+   }
+   else{ // has a 3 parameter, can be the option to run the tests
+     if (args.length==3)  runTests(args[2]) ; // If appropiate command line parameter 'runtests', then will run some tests.
+   }
 
-   runTests(args[2]) ; // If appropiate command line parameter, then will run some tests. 
-
+  //---------------------------------------------------------------------------------------------------------------------------
    MatchSolver matchSolver;
    List<Product> listOfProducts=null;
    listOfProducts = loadProductsFromFile (args[0]); // First load products.txt into a List of products
@@ -135,7 +141,7 @@ public static void main(String[] args)
  }
  public static void runTests(String s)
  {
-   if (s!=null && s.equals("runtests") ) // Just to run some tests ... if not pass by parameter, runs normally.
+   if (s!=null && s.equals("runtests") ) // Just to run some tests ...
    {
       TestClass test = new TestClass();
       test.runAllTests();
