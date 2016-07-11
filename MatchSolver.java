@@ -37,7 +37,7 @@ public class MatchSolver
       for (ProductListing pl : this.matchResults.productsListings)
       {
          bestIndex = bestIndex + 1;
-         if (MatchSolver.isSameManufacturer(pl.product,listing))  // Is the same manufacturer then is a candidate, to look more into it .. bestScore will decide the best match
+         if (MatchSolver.isSameManufacturer(pl.product,listing))  // Is the same manufacturer then is a candidate, to look more into it ..
          {
             boolean samemodel = MatchSolver.isSameModel(pl.product,listing);
             if (samemodel)
@@ -51,7 +51,7 @@ public class MatchSolver
             }
          }
          //else  don't even mind, is not from the same manufacturer, no matther how similar the product is, so skip to the next product.
-         //Example: CyberShot Camera from sony is not the same as CyberShot camera from Nikon, no matter that in the lising Cysbershot Camera is a common string
+         //Example: CyberShot Camera from sony is not the same as CyberShot camera from Nikon, no matter that in the listing Cysbershot Camera is a common string
       }
      // if reaches this point there is not match so add to no matching list
       this.matchResults.listingsNotAssigned.add(listing);
@@ -65,7 +65,7 @@ public class MatchSolver
   {
 
     String[] modelParts = product.model.split("\\s+");
-    String[] listingParts = listing.title.split("\\b+");
+    String[] listingParts = listing.title.split("\\s+");
     int wordsFound =0;
     for (int i=0; i<modelParts.length;i++)
      {  // Try to find the model in the array of listing parts ...
@@ -79,10 +79,12 @@ public class MatchSolver
             }
           }
       } // End of modelParts
-      if (wordsFound>=modelParts.length-1) // we found at least all words -1
+
+      if (wordsFound!=0 && wordsFound==modelParts.length) // we found at least all words -1
       {
-        return true; // Is the same model
+          return true; // Is the same model
       }
+
       // If we got here, we have to consider another possibility is that the compound model can be in just a whole word
       // Example:  model : A3100 IS     ... can appear in a listing as   A3100IS, but just if the model has more than one word
       if (modelParts.length>1)
@@ -90,7 +92,7 @@ public class MatchSolver
         for (int j=1; j<listingParts.length; j++)
           {
             int countFound = MatchSolver.countModelOcurrences(listingParts[j].toLowerCase(),modelParts);
-            if(countFound>=modelParts.length-1)
+            if(countFound==modelParts.length)
             {
               return true;  // Found the model inside a compound  word in the listing
             }

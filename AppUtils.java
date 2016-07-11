@@ -22,7 +22,13 @@ public class AppUtils
           if (productListing.listings.size()>0)
           {
             // Use a string builder instead. and need to write the listings.
-            String line = "{\"product_name\":"+ "\""+ productListing.product.product_name +"\"" + "}";
+            String line = "{\"product_name\":"+ "\""+ productListing.product.product_name +"\"" + "}\n";
+            for (int j=0; j<productListing.listings.size(); j++)
+            {
+               Listing listing = productListing.listings.get(j);
+               line = line + listing.title + "\n";
+
+            }
             bufferWriter.write(line);
             bufferWriter.newLine();
           }

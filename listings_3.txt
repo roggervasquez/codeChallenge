@@ -3,4 +3,3 @@
 {"title":"Praktica - Luxmedia 10-TS - Appareil photo numérique compact - Grand écran TFT couleur 3 \" tactile - 10 Mpix - Zoom optique x 3 - Stabilisateur d'image - Mode suivi du visage","manufacturer":"","currency":"EUR","price":"148.32"}
 {"title":"Toshiba - Portégé G810  - Smartphone - Ecran tactile - Clavier Qwerty - Appareil photo 3 Mpix -  Bluetooth 2.0  + logiciel de navigation Copilot live 7 - Noir","manufacturer":"Toshiba","currency":"EUR","price":"459.21"}
 {"title":"Canon PowerShot A3100IS 12.1 MP Digital Camera with 4x Optical Image Stabilized Zoom and 2.7-Inch LCD (Silver)","manufacturer":"Canon Canada","currency":"CAD","price":"131.87"}
-{"title":"Olympus Stylus Tough 8000 12 Megapixel Digital Camera (Waterproof, Shockproof...","manufacturer":"Olympus","currency":"CAD","price":"549.99"}
