@@ -65,7 +65,8 @@ public static void main(String[] args)
 
            // if we get to this point, we have processed all listings and try to match them all, so let's get the results
            MatchResults  results = matchSolver.getMatchResults();
-           outPutResultsToFiles(results,"results.txt", "unmatchlistings.txt");
+           outPutResultsToFile(results.productsListings,"results.txt");
+           outPutUnMatchListingsToFile(results.listingsNotAssigned,"unmatchlistings.txt");
 
    }catch (Exception e)
       {
@@ -76,12 +77,61 @@ public static void main(String[] args)
 } // end of main
 
   /**
-   * This method  outputs the results of the matching into 2 files, the listings matched and the unmatch listings
-   * one in the resultsFileName and the other in the unMatchListingsFileName
+   * This method  outputs the results of the matching into 1 file, the listings matched
    */
-  public static void outPutResultsToFiles (MatchResults results, String resultsFileName, String unMatchListingsFileName)
+  public static void outPutResultsToFile (ArrayList<ProductListing> productsListings, String resultsFileName)
   {
+    try
+    {
+        File fileOutput = new File(resultsFileName);
+      	FileOutputStream fileOutPutStream = new FileOutputStream(fileOutput);
 
+      	BufferedWriter bufferWriter = new BufferedWriter(new OutputStreamWriter(fileOutPutStream));
+
+      	for (int i = 0; i < productsListings.size(); i++)
+        {
+          ProductListing productListing = productsListings.get(i);
+          if (productListing.listings.size()>0)
+          {
+            // Use a string builder instead. and need to write the listings.
+            String line = "{\"product_name\":"+ "\""+ productListing.product.product_name +"\"" + "}";
+            bufferWriter.write(line);
+            bufferWriter.newLine();
+          }
+      	}
+      	bufferWriter.close();
+
+    } catch (Exception e)
+       {
+           System.err.println("Error Generating  file: " + e.getMessage());
+       }
+  }
+  /**
+   * This method  outputs the results of the matching into 1 file, the listings matched
+   */
+  public static void outPutUnMatchListingsToFile (ArrayList<Listing> listingsNotAssigned, String unmatchFileName)
+  {
+    try
+    {
+        File fileOutput = new File(unmatchFileName);
+        FileOutputStream fileOutPutStream = new FileOutputStream(fileOutput);
+
+        BufferedWriter bufferWriter = new BufferedWriter(new OutputStreamWriter(fileOutPutStream));
+
+        for (int i = 0; i < listingsNotAssigned.size(); i++)
+        {
+          Listing listing = listingsNotAssigned.get(i);
+
+            String line = listing.title + "," + listing.manufacturer + "," + listing.currency + "," + listing.price;
+            bufferWriter.write(line);
+            bufferWriter.newLine();
+        }
+        bufferWriter.close();
+
+    } catch (Exception e)
+       {
+           System.err.println("Error Generating  file:  " + e.getMessage());
+       }
   }
 
  /**

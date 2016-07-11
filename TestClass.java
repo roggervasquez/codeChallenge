@@ -11,16 +11,86 @@ public class TestClass
    public TestClass() {}
    public void runAllTests()
    {
-          this.testSameManufacturer1();
-          this.testDifferentManufacturer1();
-          this.testCompareStrings1();
-          this.testCompareStrings2();
-          this.testCompareStrings3();
-          this.testCompareStrings4();
-          this.testCompareStrings5();
-          this.testCompareStrings6();
+          // this.testSameManufacturer1();
+          // this.testSameManufacturer2();
+          // this.testDifferentManufacturer1();
+          // this.testCompareStrings1();
+          // this.testCompareStrings2();
+          // this.testCompareStrings3();
+          // this.testCompareStrings4();
+          // this.testCompareStrings5();
+          // this.testCompareStrings6();
+          //this.testIsSameModel1();
+          this.testCountOcurrences1();
+          this.testCountOcurrences2();
+          this.testCountOcurrences3();
+
+   }
+   public static void  testIsSameModel1()
+   {
+
+     Product p = new Product();
+     Listing l = new Listing();
+
+     p.product_name="";
+     p.manufacturer ="SONY";
+     p.model="";
+     l.title= "LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses";
+     //l.title="Soniy T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
+     l.manufacturer="";
+
+     boolean expected =  false;
+     boolean result = MatchSolver.isSameModel(p,l);
+
+
    }
 
+   public static void testCountOcurrences1()
+   {
+        String[] models = new String[]{"a3100","IS","other"};
+        int count = MatchSolver.countModelOcurrences("SXA3100ISTEM", models);
+        int expected = 2;
+        if (count==expected)
+        {
+          System.out.println("TEST PASSED: Ocurrences:" + count);
+        }
+        else
+        {
+            System.out.println("TEST FAILED: Ocurrences:" + count);
+        }
+
+
+   }
+   public static void testCountOcurrences2()
+   {
+        String[] models = new String[]{"130","IS"};
+        int count = MatchSolver.countModelOcurrences("SX130IS", models);
+        int expected = 2;
+        if (count==expected)
+        {
+          System.out.println("TEST PASSED: Ocurrences:" + count);
+        }
+        else
+        {
+            System.out.println("TEST FAILED: Ocurrences:" + count);
+        }
+
+   }
+   public static void testCountOcurrences3()
+   {
+        String[] models = new String[]{"mjm","Tough", "8000"};
+        int count = MatchSolver.countModelOcurrences("Dt-Tough-800x", models);
+        int expected = 1;
+        if (count==expected)
+        {
+          System.out.println("TEST PASSED: Ocurrences:" + count);
+        }
+        else
+        {
+            System.out.println("TEST FAILED: Ocurrences:" + count);
+        }
+
+   }
 
    public static void  testSameManufacturer1()
    {
@@ -40,6 +110,32 @@ public class TestClass
       if (expected == result)
       {
           System.out.println("TEST PASSED : Is same manufacturer");
+      }
+      else
+      {
+           System.out.println("TEST FAILED");
+      }
+      System.out.println("----------------------------------------------------------------------------------------\n");
+   }
+
+   public static void  testSameManufacturer2()
+   {
+      Product p = new Product();
+      Listing l = new Listing();
+
+      p.product_name="";
+      p.manufacturer ="SONY";
+
+      l.title="ManuSonyFab T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
+      l.manufacturer="";
+
+
+      boolean expected =  false;
+      boolean result = MatchSolver.isSameManufacturer(p,l);
+
+      if (expected == result)
+      {
+          System.out.println("TEST PASSED : Is not same  manufacturer");
       }
       else
       {
@@ -166,27 +262,7 @@ public class TestClass
       System.out.println("Similarity:" + Algorithms.similarity(model1,model2));
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public  void testAlgotithms()
-    {
-      String s1, s2,s3;    // The strings to find the edit distance between
 
-
-      s1 = "Fuji_PinePix_T205" ;
-      s2 = "Fuji_T205_PinePix" ;
-      s3 = "Fuji" ;
-
-
-      int d = Algorithms.editDistance(s1,s2);
-
-      double db = Algorithms.similarity(s1,s3);
-      double other = Algorithms.compareStrings(s1,s3);
-        System.out.println("Distance:" + d);
-        System.out.println("Common xx:" + Algorithms.longestCommonSubstring(s1,s2));
-        System.out.println("similarity:" + db);
-           System.out.println("Compare:" + other);
-
-
-    }
 
 
 }

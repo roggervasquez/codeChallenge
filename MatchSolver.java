@@ -28,41 +28,96 @@ public class MatchSolver
 
 
  /**
- * The most important method, is the one that decides if a listing matches to a product, and if matches to several of them
- * it decides based on a bestScore which one of the products is the most likely to match with the listing. If a match is found
- * bestIndex will provide the location of that product in the productListings list.
- * but it also decides that the listing does not match with any of the products, it is discarded and added to a list of not assigned listings.
+ * The most important method, is the one that decides if a listing matches to a product, and if matches in manufacturer
+ * and model it decides that is the best matching
  */
   public void matchListing(Listing listing)
   {
       int bestIndex =-1;  // keeps track which index of the productsListing is the best match so far.
-      double bestScore=0.0;  // Keeps the information of the best score found at the moment of a matching
-
       for (ProductListing pl : this.matchResults.productsListings)
       {
+         bestIndex = bestIndex + 1;
          if (MatchSolver.isSameManufacturer(pl.product,listing))  // Is the same manufacturer then is a candidate, to look more into it .. bestScore will decide the best match
          {
-
+            boolean samemodel = MatchSolver.isSameModel(pl.product,listing);
+            if (samemodel)
+            {
+              this.matchResults.productsListings.get(bestIndex).listings.add(listing);
+              return; // No need to look further because of the unique property base on Manufacturer+model (so it will not be a better matching ahead)
+            }
+            else
+            {
+              // we could try to see if is a match by the family, but ...
+            }
          }
          //else  don't even mind, is not from the same manufacturer, no matther how similar the product is, so skip to the next product.
          //Example: CyberShot Camera from sony is not the same as CyberShot camera from Nikon, no matter that in the lising Cysbershot Camera is a common string
       }
-      // If we found a match, is the best we found based on the bestScore. In this case a listing at MOST will be match just to only one product or none at all.
-      if(bestIndex!=-1)
-      {
-         //the bestIndex tells us the position of the best product it matches. SO need to add the listing to it
-         this.matchResults.productsListings.get(bestIndex).listings.add(listing);
-      }
-      else   // if we got to this point and bestindex = -1, then we do not find any product to match the listing pass by parameter
-      {
-        this.matchResults.listingsNotAssigned.add(listing);
-      }
+     // if reaches this point there is not match so add to no matching list
+      this.matchResults.listingsNotAssigned.add(listing);
+
   }
 
+ /**
+ * Checks if the listing is the same model as a product, pre-condition, asumming we already check that there are from the same manufacturer
+ */
+  public static  boolean isSameModel(Product product, Listing listing)
+  {
 
+    String[] modelParts = product.model.split("\\s+");
+    String[] listingParts = listing.title.split("\\b+");
+    int wordsFound =0;
+    for (int i=0; i<modelParts.length;i++)
+     {  // Try to find the model in the array of listing parts ...
+       // for example:  mju Tough 8000 , lenght is 3, but it will be enough finding 2 words for example tough 8000
+         for (int j=1; j<listingParts.length; j++)
+         {
+           if (listingParts[j].toLowerCase().equals(modelParts[i].toLowerCase()))
+            {
+              wordsFound++;
+              break; // found once no need to keep searching
+            }
+          }
+      } // End of modelParts
+      if (wordsFound>=modelParts.length-1) // we found at least all words -1
+      {
+        return true; // Is the same model
+      }
+      // If we got here, we have to consider another possibility is that the compound model can be in just a whole word
+      // Example:  model : A3100 IS     ... can appear in a listing as   A3100IS, but just if the model has more than one word
+      if (modelParts.length>1)
+      {
+        for (int j=1; j<listingParts.length; j++)
+          {
+            int countFound = MatchSolver.countModelOcurrences(listingParts[j].toLowerCase(),modelParts);
+            if(countFound>=modelParts.length-1)
+            {
+              return true;  // Found the model inside a compound  word in the listing
+            }
+          }
+      }
+      return false;
+   }
 
-
-
+   /**
+   * Checks in a word ,  how many of the strings in modelWords exists
+   */
+   public static  int countModelOcurrences(String word, String [] modelWords)
+   {
+      int count=0;
+      String temp = word.toLowerCase();
+      for(int i=0; i<modelWords.length; i++)
+      {
+        //System.out.println(temp + ":" + modelWords[i]);
+        int indexFound = temp.indexOf(modelWords[i].toLowerCase());
+        if (indexFound!=-1)
+        {
+           count++;
+           temp = temp.substring(indexFound + modelWords[i].length());
+        }
+      }
+      return count;
+   }
 
 
 
@@ -71,17 +126,19 @@ public class MatchSolver
   */
   public static  boolean isSameManufacturer(Product product, Listing listing)
   {
+      //If the listing manufacturer is not empty we could check that , but normally the listing has the manufacturer toLowerCase
 
-
-     int checkListingManufacturer = listing.manufacturer.toLowerCase().indexOf(product.manufacturer.toLowerCase());
-     int checkListingTitle = listing.title.toLowerCase().indexOf(product.manufacturer.toLowerCase());
-     // We have to look the product.manufacturer in the listing manufacturer or in the title, in case the other is empty
-     if (checkListingTitle >=0 || checkListingManufacturer>=0)
+     // Split the listing title in whole words to test if the manufacturer exists in those words
+     // Indexof could not work in case a manufacturer name is a substring of another manufacturer name
+     String[] listingParts = listing.title.split("\\b+");
+     for(int i=0; i<listingParts.length;i++)
      {
-
-       return true;
+       if(listingParts[i].toLowerCase().equals(product.manufacturer.toLowerCase()))
+       {
+         return true;
+       }
      }
-    return false;
+     return false;
   }
 
 }
