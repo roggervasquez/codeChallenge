@@ -11,11 +11,11 @@ public class TestClass
    public TestClass() {}
    public void runAllTests()
    {
-           this.testSameManufacturer1();
-           this.testSameManufacturer2();
-           this.testSameManufacturer3();
-            this.testSameManufacturer4();
-              this.testSameManufacturer5();
+          //  this.testSameManufacturer1();
+          //  this.testSameManufacturer2();
+          //  this.testSameManufacturer3();
+          //   this.testSameManufacturer4();
+          //     this.testSameManufacturer5();
       //     this.testDifferentManufacturer1();
           // this.testCompareStrings1();
           // this.testCompareStrings2();
@@ -23,7 +23,11 @@ public class TestClass
           // this.testCompareStrings4();
           // this.testCompareStrings5();
           // this.testCompareStrings6();
-          //this.testIsSameModel1();
+          this.testIsSameModel1();
+          this.testIsSameModel2();
+          this.testIsSameModel3();
+          this.testIsSameModel4();
+
         //  this.testCountOcurrences1();
         //  this.testCountOcurrences2();
         //  this.testCountOcurrences3();
@@ -38,15 +42,100 @@ public class TestClass
 
      p.product_name="";
      p.manufacturer ="SONY";
-     p.model="";
-     l.title= "LED Flash Macro Ring Light (48 X LED) with 6 Adapter Rings for For Canon/Sony/Nikon/Sigma Lenses";
-     //l.title="Soniy T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
+     p.model="DSC-T99";
+
+     l.title="Sony T Series DSC-T990 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
      l.manufacturer="";
 
      boolean expected =  false;
 
      ResultSameModel result = MatchSolver.isSameModel(p,l);
+     if (result.found==expected)
+     {
+       System.out.println("TEST PASSED: different Model");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: ");
+     }
 
+   }
+   public static void  testIsSameModel2()
+   {
+
+     Product p = new Product();
+     Listing l = new Listing();
+
+     p.product_name="";
+     p.manufacturer ="Canon";
+     p.model="A3100 IS";
+
+     l.title="Canon Powershot A3100IS 12.1 MP digital (Silver)";
+     l.manufacturer="Canon Canada";
+
+     boolean expected =  true;
+
+     ResultSameModel result = MatchSolver.isSameModel(p,l);
+     if (result.found==expected)
+     {
+       System.out.println("TEST PASSED: Same Model");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: ");
+     }
+
+   }
+   public static void  testIsSameModel3()
+   {
+
+     Product p = new Product();
+     Listing l = new Listing();
+
+     p.product_name="";
+     p.manufacturer ="Olympus";
+     p.model="mju Tough 8000";
+
+     l.title="Olympus Stylus tough 8000 12 Megapixel Digital Camera (Waterproof)";
+     l.manufacturer="OLYMPUS";
+
+     boolean expected =  true;
+
+     ResultSameModel result = MatchSolver.isSameModel(p,l);
+     if (result.found==expected)
+     {
+       System.out.println("TEST PASSED: Same Model");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: ");
+     }
+
+   }
+   public static void  testIsSameModel4()
+   {
+
+     Product p = new Product();
+     Listing l = new Listing();
+
+     p.product_name="";
+     p.manufacturer ="Canon";
+     p.model="130 IS";
+
+     l.title="Canon powershot SD1300IS 12 mp (Silver)";
+     l.manufacturer="Canon";
+
+     boolean expected =  false;
+
+     ResultSameModel result = MatchSolver.isSameModel(p,l);
+     if (result.found==expected)
+     {
+       System.out.println("TEST PASSED: different Model");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: ");
+     }
 
    }
 

@@ -82,7 +82,7 @@ public class MatchSolver
           }
       } // End of modelParts
 
-      if (wordsFound!=0 && wordsFound==modelParts.length) // we found at least all words -1
+      if (wordsFound!=0 && wordsFound>=modelParts.length-1) // we found at least all words -1, need to check this condition
       {
           result.found= true;
           return result; // Is the same model
@@ -103,7 +103,7 @@ public class MatchSolver
           }
       }
       result.found= false;
-      return result; // Is the same model
+      return result;
    }
 
    /**
@@ -115,7 +115,8 @@ public class MatchSolver
       String temp = word.toLowerCase();
       for(int i=0; i<listOfWords.length; i++)
       {
-
+      // The first word can be found anywhere in the string but the next ones, has to be continuous
+      // Example : 130 IS =>  SD1300IS   :  will return 1, instead of 2
         int indexFound = temp.indexOf(listOfWords[i].toLowerCase());
         if (indexFound!=-1)
         {
