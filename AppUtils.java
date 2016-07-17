@@ -7,6 +7,7 @@ public class AppUtils
   /**
    * This method  outputs the results of the matching into 1 file, the listings matched
    */
+
   public static void outPutResultsToFile (ArrayList<ProductListing> productsListings, String resultsFileName)
   {
     try
@@ -22,11 +23,11 @@ public class AppUtils
           if (productListing.listings.size()>0)
           {
             // Use a string builder instead. and need to write the listings.
-            String line = "{\"product_name\":"+ "\""+ productListing.product.product_name +"\"" + "}\n";
+            String line = "{\"product_name\":"+ "\""+ productListing.product.product_name +"\"" + "} model:" + productListing.product.model +"\n";
             for (int j=0; j<productListing.listings.size(); j++)
             {
                Listing listing = productListing.listings.get(j);
-               line = line + listing.title + "\n";
+               line = line + listing.title + "," + listing.manufacturer +","+ listing.price + "," + listing.currency+ "\n";
 
             }
             bufferWriter.write(line);

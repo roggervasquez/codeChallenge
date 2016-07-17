@@ -11,9 +11,12 @@ public class TestClass
    public TestClass() {}
    public void runAllTests()
    {
-          // this.testSameManufacturer1();
-          // this.testSameManufacturer2();
-          // this.testDifferentManufacturer1();
+           this.testSameManufacturer1();
+           this.testSameManufacturer2();
+           this.testSameManufacturer3();
+            this.testSameManufacturer4();
+              this.testSameManufacturer5();
+      //     this.testDifferentManufacturer1();
           // this.testCompareStrings1();
           // this.testCompareStrings2();
           // this.testCompareStrings3();
@@ -21,9 +24,10 @@ public class TestClass
           // this.testCompareStrings5();
           // this.testCompareStrings6();
           //this.testIsSameModel1();
-          this.testCountOcurrences1();
-          this.testCountOcurrences2();
-          this.testCountOcurrences3();
+        //  this.testCountOcurrences1();
+        //  this.testCountOcurrences2();
+        //  this.testCountOcurrences3();
+        //this.testCountOcurrences4();
 
    }
    public static void  testIsSameModel1()
@@ -40,7 +44,8 @@ public class TestClass
      l.manufacturer="";
 
      boolean expected =  false;
-     boolean result = MatchSolver.isSameModel(p,l);
+
+     ResultSameModel result = MatchSolver.isSameModel(p,l);
 
 
    }
@@ -48,7 +53,7 @@ public class TestClass
    public static void testCountOcurrences1()
    {
         String[] models = new String[]{"a3100","IS","other"};
-        int count = MatchSolver.countModelOcurrences("SXA3100ISTEM", models);
+        int count = MatchSolver.countWordOcurrences( models , "SXA3100ISTEM");
         int expected = 2;
         if (count==expected)
         {
@@ -64,7 +69,7 @@ public class TestClass
    public static void testCountOcurrences2()
    {
         String[] models = new String[]{"130","IS"};
-        int count = MatchSolver.countModelOcurrences("SX130IS", models);
+        int count = MatchSolver.countWordOcurrences( models ,"SX130IS");
         int expected = 2;
         if (count==expected)
         {
@@ -78,8 +83,8 @@ public class TestClass
    }
    public static void testCountOcurrences3()
    {
-        String[] models = new String[]{"mjm","Tough", "8000"};
-        int count = MatchSolver.countModelOcurrences("Dt-Tough-800x", models);
+        String[] models = new String[]{"Dt-Tough-800x","Tough", "8000"};
+        int count = MatchSolver.countWordOcurrences( models,"Dt-Tough-800x");
         int expected = 1;
         if (count==expected)
         {
@@ -91,6 +96,24 @@ public class TestClass
         }
 
    }
+   public static void testCountOcurrences4()
+   {
+        String[] manufacturer = new String[]{"Man","Konica", "Minolta"};
+        String[] words = new String[]{"KONICA", "ACER", "MINolta"};
+
+        int count = MatchSolver.countWordOcurrences( words,manufacturer);
+        int expected = 2;
+        if (count==expected)
+        {
+          System.out.println("TEST PASSED: Ocurrences:" + count);
+        }
+        else
+        {
+            System.out.println("TEST FAILED: Ocurrences:" + count);
+        }
+
+   }
+
 
    public static void  testSameManufacturer1()
    {
@@ -143,6 +166,85 @@ public class TestClass
       }
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
+   public static void  testSameManufacturer3()
+   {
+      Product p = new Product();
+      Listing l = new Listing();
+
+      p.product_name="";
+      p.manufacturer ="Canon";
+
+      l.title="DURAGADGET Premium wrist Camera Carrying Strap with 2 Year Warranty for Canon Ixus 1000HS, Ixus 300HS, Ixus 210, Ixus 200IS, Ixus 130, Ixus 120IS";
+      l.manufacturer="DURAGADGET";
+
+
+      boolean expected =  false;
+      boolean result = MatchSolver.isSameManufacturer(p,l);
+
+      if (expected == result)
+      {
+          System.out.println("TEST PASSED : Is not same  manufacturer");
+      }
+      else
+      {
+           System.out.println("TEST FAILED");
+      }
+      System.out.println("----------------------------------------------------------------------------------------\n");
+   }
+
+   public static void  testSameManufacturer4()
+   {
+      Product p = new Product();
+      Listing l = new Listing();
+
+      p.product_name="";
+      p.manufacturer ="Kodak";
+
+      l.title="Kodak EasyShare M893 IS Digital Camera (Blue)";
+      l.manufacturer="8187049";
+
+
+      boolean expected =  true;
+      boolean result = MatchSolver.isSameManufacturer(p,l);
+
+      if (expected == result)
+      {
+          System.out.println("TEST PASSED : Is same  manufacturer");
+      }
+      else
+      {
+           System.out.println("TEST FAILED");
+      }
+      System.out.println("----------------------------------------------------------------------------------------\n");
+   }
+
+   public static void  testSameManufacturer5()
+   {
+      Product p = new Product();
+      Listing l = new Listing();
+
+      p.product_name="";
+      p.manufacturer ="Konica Minolta";
+
+      l.title="Konica-Minolta Dimage X1 Digitalkamera (8 Megapixel) in schwarz";
+      l.manufacturer="Konica Minolta Europe GmbH";
+
+
+      boolean expected =  true;
+      boolean result = MatchSolver.isSameManufacturer(p,l);
+
+      if (expected == result)
+      {
+          System.out.println("TEST PASSED : Is same  manufacturer");
+      }
+      else
+      {
+           System.out.println("TEST FAILED");
+      }
+      System.out.println("----------------------------------------------------------------------------------------\n");
+   }
+
+
 
    public static void  testDifferentManufacturer1()
    {

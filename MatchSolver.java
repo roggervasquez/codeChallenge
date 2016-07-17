@@ -34,13 +34,14 @@ public class MatchSolver
   public void matchListing(Listing listing)
   {
       int bestIndex =-1;  // keeps track which index of the productsListing is the best match so far.
+      double bestScore =0.0;
       for (ProductListing pl : this.matchResults.productsListings)
       {
          bestIndex = bestIndex + 1;
          if (MatchSolver.isSameManufacturer(pl.product,listing))  // Is the same manufacturer then is a candidate, to look more into it ..
          {
-            boolean samemodel = MatchSolver.isSameModel(pl.product,listing);
-            if (samemodel)
+            ResultSameModel result = MatchSolver.isSameModel(pl.product,listing);
+            if (result.found)
             {
               this.matchResults.productsListings.get(bestIndex).listings.add(listing);
               return; // No need to look further because of the unique property base on Manufacturer+model (so it will not be a better matching ahead)
@@ -61,8 +62,9 @@ public class MatchSolver
  /**
  * Checks if the listing is the same model as a product, pre-condition, asumming we already check that there are from the same manufacturer
  */
-  public static  boolean isSameModel(Product product, Listing listing)
+  public static  ResultSameModel isSameModel(Product product, Listing listing)
   {
+    ResultSameModel result = new ResultSameModel();
 
     String[] modelParts = product.model.split("\\s+");
     String[] listingParts = listing.title.split("\\s+");
@@ -82,7 +84,8 @@ public class MatchSolver
 
       if (wordsFound!=0 && wordsFound==modelParts.length) // we found at least all words -1
       {
-          return true; // Is the same model
+          result.found= true;
+          return result; // Is the same model
       }
 
       // If we got here, we have to consider another possibility is that the compound model can be in just a whole word
@@ -91,36 +94,59 @@ public class MatchSolver
       {
         for (int j=1; j<listingParts.length; j++)
           {
-            int countFound = MatchSolver.countModelOcurrences(listingParts[j].toLowerCase(),modelParts);
+            int countFound = MatchSolver.countWordOcurrences(modelParts,listingParts[j].toLowerCase());
             if(countFound==modelParts.length)
             {
-              return true;  // Found the model inside a compound  word in the listing
+              result.found= true;
+              return result; // Is the same model;  // Found the model inside a compound  word in the listing
             }
           }
       }
-      return false;
+      result.found= false;
+      return result; // Is the same model
    }
 
    /**
    * Checks in a word ,  how many of the strings in modelWords exists
    */
-   public static  int countModelOcurrences(String word, String [] modelWords)
+   public static  int countWordOcurrences(String [] listOfWords,String word)
    {
       int count=0;
       String temp = word.toLowerCase();
-      for(int i=0; i<modelWords.length; i++)
+      for(int i=0; i<listOfWords.length; i++)
       {
-        //System.out.println(temp + ":" + modelWords[i]);
-        int indexFound = temp.indexOf(modelWords[i].toLowerCase());
+
+        int indexFound = temp.indexOf(listOfWords[i].toLowerCase());
         if (indexFound!=-1)
         {
            count++;
-           temp = temp.substring(indexFound + modelWords[i].length());
+           temp = temp.substring(indexFound + listOfWords[i].length());
         }
       }
       return count;
    }
-
+   /**
+   * Checks if the words in wordsToFind appear in the array whereToFind
+   * But in order. When a word is found the next one starts looking where the other was found +1
+   */
+   public static  int countWordOcurrences(String [] wordsToFind, String [] whereToFind)
+   {
+      int count=0;
+      int currentIndex=0;
+      for (int i=0; i<wordsToFind.length; i++)
+      {
+          for(int j=currentIndex; j < whereToFind.length;j++)
+          {
+            if (wordsToFind[i].toLowerCase().equals(whereToFind[j].toLowerCase()))
+            {
+              count++;
+              currentIndex = j+1;;
+              break;
+            }
+          }
+      }
+      return count;
+   }
 
 
   /**
@@ -128,19 +154,38 @@ public class MatchSolver
   */
   public static  boolean isSameManufacturer(Product product, Listing listing)
   {
-      //If the listing manufacturer is not empty we could check that , but normally the listing has the manufacturer toLowerCase
-
-     // Split the listing title in whole words to test if the manufacturer exists in those words
-     // Indexof could not work in case a manufacturer name is a substring of another manufacturer name
+       // Change logic, to first check the current manufacturer of listing exists in the title is that the case
+       // then search product.manufacturer only in the listing manufacturer, if not, search it in the title
      String[] listingParts = listing.title.split("\\b+");
-     for(int i=0; i<listingParts.length;i++)
+     String[] productManufacturerParts = product.manufacturer.split("\\s+");
+     String[] listingManufacturerParts = listing.manufacturer.split("\\s+");
+
+     int countInManufacturers=0;
+     int countInListings =0;
+     int countProductsInListings =0;
+
+     if (!listing.manufacturer.isEmpty())
      {
-       if(listingParts[i].toLowerCase().equals(product.manufacturer.toLowerCase()))
-       {
-         return true;
-       }
+       countInManufacturers = countWordOcurrences(productManufacturerParts, listingManufacturerParts);
+       countInListings = countWordOcurrences(listingManufacturerParts, listingParts);
      }
-     return false;
+     countProductsInListings = countWordOcurrences(productManufacturerParts,listingParts);
+
+     if (countInManufacturers == productManufacturerParts.length) return true;
+     if(listing.manufacturer.isEmpty())
+     {
+       if (countProductsInListings== productManufacturerParts.length) return true;
+     }
+
+     if (countInListings==listingManufacturerParts.length)  return false ; // By transitive propoerty cannot be true because of previous conditions
+
+     if (countInListings==0) // the manufacturer in listing does not appear in title
+     {
+        // It means that the manufacturer probably is not set correctly in the listing. So by heuristic we will search in the title
+      if (countProductsInListings== productManufacturerParts.length) return true;
+     }
+
+    return false; // If you get here, there are not from the same manufacturer
   }
 
 }
