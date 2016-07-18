@@ -49,7 +49,8 @@ public static void main(String[] args)
    // to generate a separate file of this listings that were not matched with any product (for debuggin purposes)
     try
     {
-           matchSolver =new MatchSolver(listOfProducts); // Instatiate the matchSolver passing the list of products
+          // 0.9 manufacturer similarity and 1.0 = 2/3 of words found in model
+           matchSolver =new MatchSolver(listOfProducts,0.9,1.0); // Instatiate the matchSolver passing the list of products
            FileInputStream fstream = new FileInputStream(args[1]);  // Try to read the listings.txt file
            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
            String strLine;

@@ -11,11 +11,13 @@ public class TestClass
    public TestClass() {}
    public void runAllTests()
    {
-          //  this.testSameManufacturer1();
-          //  this.testSameManufacturer2();
-          //  this.testSameManufacturer3();
-          //   this.testSameManufacturer4();
-          //     this.testSameManufacturer5();
+           this.testSameManufacturer1();
+           this.testSameManufacturer2();
+           this.testSameManufacturer3();
+           this.testSameManufacturer4();
+           this.testSameManufacturer5();
+           this.testSameManufacturer6();
+
       //     this.testDifferentManufacturer1();
           // this.testCompareStrings1();
           // this.testCompareStrings2();
@@ -23,17 +25,29 @@ public class TestClass
           // this.testCompareStrings4();
           // this.testCompareStrings5();
           // this.testCompareStrings6();
+
           this.testIsSameModel1();
           this.testIsSameModel2();
           this.testIsSameModel3();
           this.testIsSameModel4();
 
-        //  this.testCountOcurrences1();
-        //  this.testCountOcurrences2();
-        //  this.testCountOcurrences3();
-        //this.testCountOcurrences4();
+            this.testSimilarity1();
 
    }
+   public static void testSimilarity1()
+   {
+     String s1= "DURAGADGET";
+     String s2= "DURAGAGDGET";
+     double value = Algorithms.similarity( s1,  s2);
+     System.out.println("Value:" +value);
+     value = Algorithms.compareStrings(s1,s2);
+     System.out.println("Value:" +value);
+     int distance = Algorithms.editDistance(s1,s2);
+     System.out.println("Value:" +distance);
+
+
+   }
+
    public static void  testIsSameModel1()
    {
 
@@ -58,7 +72,7 @@ public class TestClass
      {
          System.out.println("TEST FAILED: ");
      }
-
+       System.out.println("----------------------------------------------------------------------------------------\n");
    }
    public static void  testIsSameModel2()
    {
@@ -84,7 +98,7 @@ public class TestClass
      {
          System.out.println("TEST FAILED: ");
      }
-
+      System.out.println("----------------------------------------------------------------------------------------\n");
    }
    public static void  testIsSameModel3()
    {
@@ -99,18 +113,18 @@ public class TestClass
      l.title="Olympus Stylus tough 8000 12 Megapixel Digital Camera (Waterproof)";
      l.manufacturer="OLYMPUS";
 
-     boolean expected =  true;
+     boolean expected =  false;
 
      ResultSameModel result = MatchSolver.isSameModel(p,l);
      if (result.found==expected)
      {
-       System.out.println("TEST PASSED: Same Model");
+       System.out.println("TEST PASSED: NOT Same Model");
      }
      else
      {
          System.out.println("TEST FAILED: ");
      }
-
+    System.out.println("----------------------------------------------------------------------------------------\n");
    }
    public static void  testIsSameModel4()
    {
@@ -136,72 +150,9 @@ public class TestClass
      {
          System.out.println("TEST FAILED: ");
      }
-
+      System.out.println("----------------------------------------------------------------------------------------\n");
    }
 
-   public static void testCountOcurrences1()
-   {
-        String[] models = new String[]{"a3100","IS","other"};
-        int count = MatchSolver.countWordOcurrences( models , "SXA3100ISTEM");
-        int expected = 2;
-        if (count==expected)
-        {
-          System.out.println("TEST PASSED: Ocurrences:" + count);
-        }
-        else
-        {
-            System.out.println("TEST FAILED: Ocurrences:" + count);
-        }
-
-
-   }
-   public static void testCountOcurrences2()
-   {
-        String[] models = new String[]{"130","IS"};
-        int count = MatchSolver.countWordOcurrences( models ,"SX130IS");
-        int expected = 2;
-        if (count==expected)
-        {
-          System.out.println("TEST PASSED: Ocurrences:" + count);
-        }
-        else
-        {
-            System.out.println("TEST FAILED: Ocurrences:" + count);
-        }
-
-   }
-   public static void testCountOcurrences3()
-   {
-        String[] models = new String[]{"Dt-Tough-800x","Tough", "8000"};
-        int count = MatchSolver.countWordOcurrences( models,"Dt-Tough-800x");
-        int expected = 1;
-        if (count==expected)
-        {
-          System.out.println("TEST PASSED: Ocurrences:" + count);
-        }
-        else
-        {
-            System.out.println("TEST FAILED: Ocurrences:" + count);
-        }
-
-   }
-   public static void testCountOcurrences4()
-   {
-        String[] manufacturer = new String[]{"Man","Konica", "Minolta"};
-        String[] words = new String[]{"KONICA", "ACER", "MINolta"};
-
-        int count = MatchSolver.countWordOcurrences( words,manufacturer);
-        int expected = 2;
-        if (count==expected)
-        {
-          System.out.println("TEST PASSED: Ocurrences:" + count);
-        }
-        else
-        {
-            System.out.println("TEST FAILED: Ocurrences:" + count);
-        }
-
-   }
 
 
    public static void  testSameManufacturer1()
@@ -332,20 +283,16 @@ public class TestClass
       }
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
-
-
-
-   public static void  testDifferentManufacturer1()
+   public static void  testSameManufacturer6()
    {
       Product p = new Product();
       Listing l = new Listing();
 
       p.product_name="";
-      p.manufacturer ="SONY";
+      p.manufacturer ="Samsung";
 
-
-      l.title="Soniy T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver) ";
-      l.manufacturer="";
+      l.title="DURAGAGDGET Deluxe Black Carry Case / Bag / Pouch with Belt loop for digital camera + belt clip for Samsung WB210";
+      l.manufacturer="DURAGADGET";
 
 
       boolean expected =  false;
@@ -353,14 +300,17 @@ public class TestClass
 
       if (expected == result)
       {
-          System.out.println("TEST PASSED : Is different");
+          System.out.println("TEST PASSED : Is NOT same  manufacturer");
       }
       else
       {
            System.out.println("TEST FAILED");
       }
-       System.out.println("----------------------------------------------------------------------------------------\n");
+      System.out.println("----------------------------------------------------------------------------------------\n");
    }
+
+
+
    public static void  testCompareStrings1()
    {
 

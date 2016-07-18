@@ -15,8 +15,9 @@ public class MatchSolver
   }
 
  // Constructor
-  public MatchSolver(List<Product> products)
+  public MatchSolver(List<Product> products,double similarity,double percentageModels)
   {
+
     //Fill the matchResults with the whole list of products but with emppty listings for each one, matching has not started.
     matchResults = new MatchResults ();
     for (Product p : products)
@@ -46,10 +47,7 @@ public class MatchSolver
               this.matchResults.productsListings.get(bestIndex).listings.add(listing);
               return; // No need to look further because of the unique property base on Manufacturer+model (so it will not be a better matching ahead)
             }
-            else
-            {
-              // we could try to see if is a match by the family, but ...
-            }
+
          }
          //else  don't even mind, is not from the same manufacturer, no matther how similar the product is, so skip to the next product.
          //Example: CyberShot Camera from sony is not the same as CyberShot camera from Nikon, no matter that in the listing Cysbershot Camera is a common string
@@ -81,8 +79,7 @@ public class MatchSolver
             }
           }
       } // End of modelParts
-
-      if (wordsFound!=0 && wordsFound>=modelParts.length-1) // we found at least all words -1, need to check this condition
+      if (wordsFound!=0 && wordsFound>=modelParts.length) // we found all words from the model in the listing
       {
           result.found= true;
           return result; // Is the same model
@@ -90,6 +87,7 @@ public class MatchSolver
 
       // If we got here, we have to consider another possibility is that the compound model can be in just a whole word
       // Example:  model : A3100 IS     ... can appear in a listing as   A3100IS, but just if the model has more than one word
+      // But model : 130 IS  , Could also be found in SD1300IS by mistake, it has to deal with this cases too
       if (modelParts.length>1)
       {
         for (int j=1; j<listingParts.length; j++)
@@ -105,50 +103,6 @@ public class MatchSolver
       result.found= false;
       return result;
    }
-
-   /**
-   * Checks in a word ,  how many of the strings in modelWords exists
-   */
-   public static  int countWordOcurrences(String [] listOfWords,String word)
-   {
-      int count=0;
-      String temp = word.toLowerCase();
-      for(int i=0; i<listOfWords.length; i++)
-      {
-      // The first word can be found anywhere in the string but the next ones, has to be continuous
-      // Example : 130 IS =>  SD1300IS   :  will return 1, instead of 2
-        int indexFound = temp.indexOf(listOfWords[i].toLowerCase());
-        if (indexFound!=-1)
-        {
-           count++;
-           temp = temp.substring(indexFound + listOfWords[i].length());
-        }
-      }
-      return count;
-   }
-   /**
-   * Checks if the words in wordsToFind appear in the array whereToFind
-   * But in order. When a word is found the next one starts looking where the other was found +1
-   */
-   public static  int countWordOcurrences(String [] wordsToFind, String [] whereToFind)
-   {
-      int count=0;
-      int currentIndex=0;
-      for (int i=0; i<wordsToFind.length; i++)
-      {
-          for(int j=currentIndex; j < whereToFind.length;j++)
-          {
-            if (wordsToFind[i].toLowerCase().equals(whereToFind[j].toLowerCase()))
-            {
-              count++;
-              currentIndex = j+1;;
-              break;
-            }
-          }
-      }
-      return count;
-   }
-
 
   /**
   * Checks if a listing is from the same manufacturer as the product , based on different criteria
@@ -167,10 +121,10 @@ public class MatchSolver
 
      if (!listing.manufacturer.isEmpty())
      {
-       countInManufacturers = countWordOcurrences(productManufacturerParts, listingManufacturerParts);
-       countInListings = countWordOcurrences(listingManufacturerParts, listingParts);
+       countInManufacturers = countWordOcurrences(productManufacturerParts, listingManufacturerParts, 1.0);
+       countInListings = countWordOcurrences(listingManufacturerParts, listingParts, 0.9);
      }
-     countProductsInListings = countWordOcurrences(productManufacturerParts,listingParts);
+     countProductsInListings = countWordOcurrences(productManufacturerParts,listingParts, 1.0);
 
      if (countInManufacturers == productManufacturerParts.length) return true;
      if(listing.manufacturer.isEmpty())
@@ -188,5 +142,63 @@ public class MatchSolver
 
     return false; // If you get here, there are not from the same manufacturer
   }
+  /**
+  * Checks in a word ,  how many of the strings in modelWords exists
+  */
+  public static  int countWordOcurrences(String [] listOfWords,String word)
+  {
+     int count=0;
+     String temp = word.toLowerCase();
+
+     int indexFound = temp.indexOf(listOfWords[0].toLowerCase()); // First word has to be in the string, if not return 0
+     if (indexFound==-1)
+        return 0;
+     else
+     {
+        count=1;
+        temp = temp.substring(indexFound + listOfWords[0].length()); // Chop the word without the first word found
+     }
+     // Start searching from the seconud word forward, all inner ocurrences need to happen at position ZERO
+     for(int i=1; i<listOfWords.length; i++)
+     {
+     // The first word can be found anywhere in the string but the next ones, has to be continuous
+     // Example : 130 IS =>  SD1300IS   :  will return 1, instead of 2 ;   130IS will work
+        indexFound = temp.indexOf(listOfWords[i].toLowerCase());
+       if (indexFound==0)
+       {
+          count++;
+          temp = temp.substring(indexFound + listOfWords[i].length());
+       }
+       else
+       {
+         break; // No need to look forward
+       }
+     }
+     return count;
+  }
+  /**
+  * Checks if the words in wordsToFind appear in the array whereToFind
+  * But in order. When a word is found the next one starts looking where the other was found +1
+  */
+  public static  int countWordOcurrences(String [] wordsToFind, String [] whereToFind, double similarity)
+  {
+     int count=0;
+     int currentIndex=0;
+     for (int i=0; i<wordsToFind.length; i++)
+     {
+         for(int j=currentIndex; j < whereToFind.length;j++)
+         {
+           if (wordsToFind[i].toLowerCase().equals(whereToFind[j].toLowerCase())
+              || Algorithms.similarity(wordsToFind[i].toLowerCase(), whereToFind[j].toLowerCase())>=similarity )
+           {
+             count++;
+             currentIndex = j+1;;
+             break;
+           }
+         }
+     }
+     return count;
+  }
+
 
 }
