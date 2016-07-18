@@ -15,7 +15,7 @@ public class MatchSolver
   }
 
  // Constructor
-  public MatchSolver(List<Product> products,double similarity,double percentageModels)
+  public MatchSolver(List<Product> products)
   {
 
     //Fill the matchResults with the whole list of products but with emppty listings for each one, matching has not started.

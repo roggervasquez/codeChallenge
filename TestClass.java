@@ -18,6 +18,12 @@ public class TestClass
            this.testSameManufacturer5();
            this.testSameManufacturer6();
 
+           this.testIsSameModel1();
+           this.testIsSameModel2();
+           this.testIsSameModel3();
+           this.testIsSameModel4();
+
+           this.testSimilarity1();
       //     this.testDifferentManufacturer1();
           // this.testCompareStrings1();
           // this.testCompareStrings2();
@@ -26,12 +32,7 @@ public class TestClass
           // this.testCompareStrings5();
           // this.testCompareStrings6();
 
-          this.testIsSameModel1();
-          this.testIsSameModel2();
-          this.testIsSameModel3();
-          this.testIsSameModel4();
 
-            this.testSimilarity1();
 
    }
    public static void testSimilarity1()

@@ -46,11 +46,11 @@ public static void main(String[] args)
    // and based on a greedy approach, matchSolver will try to match the current listing with a product (list of products), in case it does, matchSolver stores
    // the results in a internal results structure and then we can return it once we finished processing all listings.
    // if the matchSolver determines that the listing cannot be match, it is stored in another listingsNotAssigned .. so we can also take a look of them
-   // to generate a separate file of this listings that were not matched with any product (for debuggin purposes)
+   // to generate a separate file of this listings that were not matched with any product (for debugging purposes)
     try
     {
           // 0.9 manufacturer similarity and 1.0 = 2/3 of words found in model
-           matchSolver =new MatchSolver(listOfProducts,0.9,1.0); // Instatiate the matchSolver passing the list of products
+           matchSolver =new MatchSolver(listOfProducts); // Instatiate the matchSolver passing the list of products
            FileInputStream fstream = new FileInputStream(args[1]);  // Try to read the listings.txt file
            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
            String strLine;
