@@ -151,76 +151,76 @@ public class MatchSolver
   * Looking for  130 IS    in  SD130IS    will return 2  SD  130  IS
   * Looking for 130 IS     in SD1300IS    will return 0 ,   SD 1300 IS  .. because it will not found the first token (130)
   */
-  public static  int countWordOcurrences(String [] listOfWords,String word)
-  {
-     int count=0;
-     String temp = word.toLowerCase();
-     String [] tokens =  temp.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-     int nextIndex=-1;
-    // First check if we can find the first word in tokens
-     for (int j=0; j< tokens.length; j++)
-     {
-        if (listOfWords[0].toLowerCase().equals(tokens[j].toLowerCase()))
-        {
-          nextIndex = j+1;
-          count=1;
-          break;
-        }
-     }
-     // If we did not found the first word, then return count or zero, no need to continue
-     if (count==0)  return 0;
-
-     // Search for the other words in listOfWords but in order in the tokens array
-     for(int i=1; i<listOfWords.length; i++)
-     {
-        // rest of words has to start in nextIndex
-        if (listOfWords[i].toLowerCase().equals(tokens[nextIndex].toLowerCase()))
-        {
-          count++;
-          nextIndex = nextIndex + 1;
-        }
-        else
-        {
-          break; // They are not consecutive , just return what ever it count consecutive
-        }
-      }
-     return count;
-  }
-
-  /**
-  * Checks in a word ,  how many of the strings in modelWords exists
-  */
   // public static  int countWordOcurrences(String [] listOfWords,String word)
   // {
   //    int count=0;
   //    String temp = word.toLowerCase();
-  //
-  //    int indexFound = temp.indexOf(listOfWords[0].toLowerCase()); // First word has to be in the string, if not return 0
-  //    if (indexFound==-1)
-  //       return 0;
-  //    else
+  //    String [] tokens =  temp.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+  //    int nextIndex=-1;
+  //   // First check if we can find the first word in tokens
+  //    for (int j=0; j< tokens.length; j++)
   //    {
-  //       count=1;
-  //       temp = temp.substring(indexFound + listOfWords[0].length()); // Chop the word without the first word found
+  //       if (listOfWords[0].toLowerCase().equals(tokens[j].toLowerCase()))
+  //       {
+  //         nextIndex = j+1;
+  //         count=1;
+  //         break;
+  //       }
   //    }
-  //    // Start searching from the seconud word forward, all inner ocurrences need to happen at position ZERO
+  //    // If we did not found the first word, then return count or zero, no need to continue
+  //    if (count==0)  return 0;
+  //
+  //    // Search for the other words in listOfWords but in order in the tokens array
   //    for(int i=1; i<listOfWords.length; i++)
   //    {
-  //    // The first word can be found anywhere in the string but the next ones, has to be continuous
-  //    // Example : 130 IS =>  SD1300IS   :  will return 1, instead of 2 ;   130IS will work
-  //       indexFound = temp.indexOf(listOfWords[i].toLowerCase());
-  //      if (indexFound==0)
-  //      {
+  //       // rest of words has to start in nextIndex
+  //       if (listOfWords[i].toLowerCase().equals(tokens[nextIndex].toLowerCase()))
+  //       {
   //         count++;
-  //         temp = temp.substring(indexFound + listOfWords[i].length());
-  //      }
-  //      else
-  //      {
-  //        break; // No need to look forward
-  //      }
-  //    }
+  //         nextIndex = nextIndex + 1;
+  //       }
+  //       else
+  //       {
+  //         break; // They are not consecutive , just return what ever it count consecutive
+  //       }
+  //     }
   //    return count;
   // }
+
+  /**
+  * Checks in a word ,  how many of the strings in modelWords exists
+  */
+  public static  int countWordOcurrences(String [] listOfWords,String word)
+  {
+     int count=0;
+     String temp = word.toLowerCase();
+
+     int indexFound = temp.indexOf(listOfWords[0].toLowerCase()); // First word has to be in the string, if not return 0
+     if (indexFound==-1)
+        return 0;
+     else
+     {
+        count=1;
+        temp = temp.substring(indexFound + listOfWords[0].length()); // Chop the word without the first word found
+     }
+     // Start searching from the seconud word forward, all inner ocurrences need to happen at position ZERO
+     for(int i=1; i<listOfWords.length; i++)
+     {
+     // The first word can be found anywhere in the string but the next ones, has to be continuous
+     // Example : 130 IS =>  SD1300IS   :  will return 1, instead of 2 ;   130IS will work
+        indexFound = temp.indexOf(listOfWords[i].toLowerCase());
+       if (indexFound==0)
+       {
+          count++;
+          temp = temp.substring(indexFound + listOfWords[i].length());
+       }
+       else
+       {
+         break; // No need to look forward
+       }
+     }
+     return count;
+  }
   /**
   * Checks if the words in wordsToFind appear in the array whereToFind
   * But in order. When a word is found the next one starts looking where the other was found +1

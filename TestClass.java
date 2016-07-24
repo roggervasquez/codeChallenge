@@ -45,7 +45,7 @@ public class TestClass
      String s1 ="130 IS";
      String s2 ="SD1300IS";
      String[] modelParts = s1.split("\\s+");
-     int expected = 0;
+     int expected = 1;
      int value = MatchSolver.countWordOcurrences(modelParts,s2);
      if (value==expected)
      {
@@ -99,7 +99,7 @@ public class TestClass
      String s1 ="130 IS 900";
      String s2 ="SD130IS9000";
      String[] modelParts = s1.split("\\s+");
-     int expected = 2;
+     int expected = 3;
      int value = MatchSolver.countWordOcurrences(modelParts,s2);
      if (value==expected)
      {
