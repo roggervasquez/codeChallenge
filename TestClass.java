@@ -11,26 +11,26 @@ public class TestClass
    public TestClass() {}
    public void runAllTests()
    {
-          //  this.testSameManufacturer1();
-          //  this.testSameManufacturer2();
-          //  this.testSameManufacturer3();
-          //  this.testSameManufacturer4();
-          //  this.testSameManufacturer5();
-          //  this.testSameManufacturer6();
+           this.testSameManufacturer1();
+           this.testSameManufacturer2();
+           this.testSameManufacturer3();
+           this.testSameManufacturer4();
+           this.testSameManufacturer5();
+           this.testSameManufacturer6();
 
-          //  this.testIsSameModel1();
-          //  this.testIsSameModel2();
-          //  this.testIsSameModel3();
-          this.testIsSameModel4();
+           this.testIsSameModel1();
+           this.testIsSameModel2();
+           this.testIsSameModel3();
+           this.testIsSameModel4();
 
            //this.testSimilarity1();
-      //     this.testDifferentManufacturer1();
-          // this.testCompareStrings1();
-          // this.testCompareStrings2();
-          // this.testCompareStrings3();
-          // this.testCompareStrings4();
-          // this.testCompareStrings5();
-          // this.testCompareStrings6();
+         //  this.testDifferentManufacturer1();
+          this.testCompareStrings1();
+          this.testCompareStrings2();
+          this.testCompareStrings3();
+          this.testCompareStrings4();
+          this.testCompareStrings5();
+          this.testCompareStrings6();
 
             this.testCoutOcurrences1();
             this.testCoutOcurrences2();
