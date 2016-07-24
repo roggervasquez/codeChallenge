@@ -11,19 +11,19 @@ public class TestClass
    public TestClass() {}
    public void runAllTests()
    {
-           this.testSameManufacturer1();
-           this.testSameManufacturer2();
-           this.testSameManufacturer3();
-           this.testSameManufacturer4();
-           this.testSameManufacturer5();
-           this.testSameManufacturer6();
+          //  this.testSameManufacturer1();
+          //  this.testSameManufacturer2();
+          //  this.testSameManufacturer3();
+          //  this.testSameManufacturer4();
+          //  this.testSameManufacturer5();
+          //  this.testSameManufacturer6();
 
-           this.testIsSameModel1();
-           this.testIsSameModel2();
-           this.testIsSameModel3();
-           this.testIsSameModel4();
+          //  this.testIsSameModel1();
+          //  this.testIsSameModel2();
+          //  this.testIsSameModel3();
+          this.testIsSameModel4();
 
-           this.testSimilarity1();
+           //this.testSimilarity1();
       //     this.testDifferentManufacturer1();
           // this.testCompareStrings1();
           // this.testCompareStrings2();
@@ -32,10 +32,105 @@ public class TestClass
           // this.testCompareStrings5();
           // this.testCompareStrings6();
 
+            this.testCoutOcurrences1();
+            this.testCoutOcurrences2();
+            this.testCoutOcurrences3();
+            this.testCoutOcurrences4();
+            this.testCoutOcurrences5();
 
 
    }
-   public static void testSimilarity1()
+  public  void testCoutOcurrences1()
+  {
+     String s1 ="130 IS";
+     String s2 ="SD1300IS";
+     String[] modelParts = s1.split("\\s+");
+     int expected = 0;
+     int value = MatchSolver.countWordOcurrences(modelParts,s2);
+     if (value==expected)
+     {
+       System.out.println("TEST PASSED: Counted correctly");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: Counted Incorrectly ");
+     }
+       System.out.println("----------------------------------------------------------------------------------------\n");
+
+  }
+  public  void testCoutOcurrences2()
+  {
+     String s1 ="130 IS";
+     String s2 ="SD130AF09IS";
+     String[] modelParts = s1.split("\\s+");
+     int expected = 1;
+     int value = MatchSolver.countWordOcurrences(modelParts,s2);
+     if (value==expected)
+     {
+       System.out.println("TEST PASSED: Counted correctly");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: Counted Incorrectly ");
+     }
+       System.out.println("----------------------------------------------------------------------------------------\n");
+
+  }
+  public  void testCoutOcurrences3()
+  {
+     String s1 ="130 IS";
+     String s2 ="SD130IS90";
+     String[] modelParts = s1.split("\\s+");
+     int expected = 2;
+     int value = MatchSolver.countWordOcurrences(modelParts,s2);
+     if (value==expected)
+     {
+       System.out.println("TEST PASSED: Counted correctly");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: Counted Incorrectly ");
+     }
+       System.out.println("----------------------------------------------------------------------------------------\n");
+
+  }
+  public  void testCoutOcurrences4()
+  {
+     String s1 ="130 IS 900";
+     String s2 ="SD130IS9000";
+     String[] modelParts = s1.split("\\s+");
+     int expected = 2;
+     int value = MatchSolver.countWordOcurrences(modelParts,s2);
+     if (value==expected)
+     {
+       System.out.println("TEST PASSED: Counted correctly");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: Counted Incorrectly ");
+     }
+       System.out.println("----------------------------------------------------------------------------------------\n");
+
+  }
+  public  void testCoutOcurrences5()
+  {
+     String s1 ="130 IS-AF 900";
+     String s2 ="SD130IS-AF900XD";
+     String[] modelParts = s1.split("\\s+");
+     int expected = 3;
+     int value = MatchSolver.countWordOcurrences(modelParts,s2);
+     if (value==expected)
+     {
+       System.out.println("TEST PASSED: Counted correctly");
+     }
+     else
+     {
+         System.out.println("TEST FAILED: Counted Incorrectly ");
+     }
+       System.out.println("----------------------------------------------------------------------------------------\n");
+
+  }
+   public  void testSimilarity1()
    {
      String s1= "DURAGADGET";
      String s2= "DURAGAGDGET";
@@ -49,7 +144,7 @@ public class TestClass
 
    }
 
-   public static void  testIsSameModel1()
+   public  void  testIsSameModel1()
    {
 
      Product p = new Product();
@@ -75,7 +170,7 @@ public class TestClass
      }
        System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public static void  testIsSameModel2()
+   public  void  testIsSameModel2()
    {
 
      Product p = new Product();
@@ -101,7 +196,7 @@ public class TestClass
      }
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public static void  testIsSameModel3()
+   public  void  testIsSameModel3()
    {
 
      Product p = new Product();
@@ -127,7 +222,7 @@ public class TestClass
      }
     System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public static void  testIsSameModel4()
+   public  void  testIsSameModel4()
    {
 
      Product p = new Product();
@@ -138,6 +233,7 @@ public class TestClass
      p.model="130 IS";
 
      l.title="Canon powershot SD1300IS 12 mp (Silver)";
+     //l.title="SD1300IS";
      l.manufacturer="Canon";
 
      boolean expected =  false;
@@ -156,7 +252,7 @@ public class TestClass
 
 
 
-   public static void  testSameManufacturer1()
+   public  void  testSameManufacturer1()
    {
       Product p = new Product();
       Listing l = new Listing();
@@ -182,7 +278,7 @@ public class TestClass
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
 
-   public static void  testSameManufacturer2()
+   public  void  testSameManufacturer2()
    {
       Product p = new Product();
       Listing l = new Listing();
@@ -207,7 +303,7 @@ public class TestClass
       }
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public static void  testSameManufacturer3()
+   public  void  testSameManufacturer3()
    {
       Product p = new Product();
       Listing l = new Listing();
@@ -233,7 +329,7 @@ public class TestClass
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
 
-   public static void  testSameManufacturer4()
+   public  void  testSameManufacturer4()
    {
       Product p = new Product();
       Listing l = new Listing();
@@ -259,7 +355,7 @@ public class TestClass
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
 
-   public static void  testSameManufacturer5()
+   public  void  testSameManufacturer5()
    {
       Product p = new Product();
       Listing l = new Listing();
@@ -284,7 +380,7 @@ public class TestClass
       }
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public static void  testSameManufacturer6()
+   public  void  testSameManufacturer6()
    {
       Product p = new Product();
       Listing l = new Listing();
@@ -312,7 +408,7 @@ public class TestClass
 
 
 
-   public static void  testCompareStrings1()
+   public  void  testCompareStrings1()
    {
 
       String title = "Sony T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver)";
@@ -329,7 +425,7 @@ public class TestClass
 
 
    }
-   public static void  testCompareStrings2()
+   public  void  testCompareStrings2()
    {
 
       String model1 = "DSC-T99";
@@ -345,7 +441,7 @@ public class TestClass
 
 
    }
-   public static void  testCompareStrings3()
+   public  void  testCompareStrings3()
    {
 
       String model1 = "DSC-T99";
@@ -361,7 +457,7 @@ public class TestClass
    }
 
 
-   public static void  testCompareStrings4()
+   public  void  testCompareStrings4()
    {
 
       String model1 = "PDR-M70";
@@ -376,7 +472,7 @@ public class TestClass
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
 
-   public static void  testCompareStrings5()
+   public  void  testCompareStrings5()
    {
 
       String model1 = "Tough 8000";
@@ -390,7 +486,7 @@ public class TestClass
       System.out.println("Similarity:" + Algorithms.similarity(model1,model2));
       System.out.println("----------------------------------------------------------------------------------------\n");
    }
-   public static void  testCompareStrings6()
+   public  void  testCompareStrings6()
    {
 
       String model1 = "A3100IS";

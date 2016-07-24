@@ -27,10 +27,13 @@ public static void main(String[] args)
    { System.err.println("At least 2 parameters are needed, products file name, listings filename");
      return;
    }
-   else{ // has a 3 parameter, can be the option to run the tests
-     if (args.length==3)  runTests(args[2]) ; // If appropiate command line parameter 'runtests', then will run some tests.
+   else
+   { // has a 3 parameter, can be the option to run the tests
+     if (args.length==3)
+     { runTests(args[2]) ; // If appropiate command line parameter 'runtests', then will run some tests.
+       return;
+     }
    }
-
   //---------------------------------------------------------------------------------------------------------------------------
    MatchSolver matchSolver;
    List<Product> listOfProducts=null;
