@@ -2,6 +2,7 @@
 
 # Result file, do not add to the repo
 results.txt
+unmatchlistings.txt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
