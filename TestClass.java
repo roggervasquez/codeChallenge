@@ -265,9 +265,9 @@ public class TestClass
 
 
       boolean expected =  true;
-      boolean result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
 
-      if (expected == result)
+      if (expected == result.found)
       {
           System.out.println("TEST PASSED : Is same manufacturer");
       }
@@ -291,9 +291,9 @@ public class TestClass
 
 
       boolean expected =  false;
-      boolean result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
 
-      if (expected == result)
+      if (expected == result.found)
       {
           System.out.println("TEST PASSED : Is not same  manufacturer");
       }
@@ -316,9 +316,9 @@ public class TestClass
 
 
       boolean expected =  false;
-      boolean result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
 
-      if (expected == result)
+      if (expected == result.found)
       {
           System.out.println("TEST PASSED : Is not same  manufacturer");
       }
@@ -342,9 +342,9 @@ public class TestClass
 
 
       boolean expected =  true;
-      boolean result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
 
-      if (expected == result)
+      if (expected == result.found)
       {
           System.out.println("TEST PASSED : Is same  manufacturer");
       }
@@ -368,9 +368,9 @@ public class TestClass
 
 
       boolean expected =  true;
-      boolean result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
 
-      if (expected == result)
+      if (expected == result.found)
       {
           System.out.println("TEST PASSED : Is same  manufacturer");
       }
@@ -393,9 +393,9 @@ public class TestClass
 
 
       boolean expected =  false;
-      boolean result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
 
-      if (expected == result)
+      if (expected == result.found)
       {
           System.out.println("TEST PASSED : Is NOT same  manufacturer");
       }

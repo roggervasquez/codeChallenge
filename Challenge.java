@@ -31,7 +31,7 @@ public static void main(String[] args)
    { // has a 3 parameter, can be the option to run the tests
      if (args.length==3)
      { runTests(args[2]) ; // If appropiate command line parameter 'runtests', then will run some tests.
-       return;
+       //return;
      }
    }
   //---------------------------------------------------------------------------------------------------------------------------
@@ -66,7 +66,8 @@ public static void main(String[] args)
 /* ===> */     matchSolver.matchListing (listing);  // Try to match the listing just read from the file, to a product, matchsolver stores results inside
            }
            br.close();
-
+           // Lets try to remove some false positives by it's price, all listings with checkPRice=true we will need to check them
+           matchSolver.checkListingsbyPrice();
            // if we get to this point, we have processed all listings and try to match them all, so let's get the results
            MatchResults  results = matchSolver.getMatchResults();
            AppUtils.outPutResultsToFile(results.productsListings,"results.txt");
@@ -87,7 +88,7 @@ public static void main(String[] args)
    {
       TestClass test = new TestClass();
       test.runAllTests();
-      return;
+
     }
  }
 

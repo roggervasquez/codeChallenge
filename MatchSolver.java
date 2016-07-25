@@ -39,11 +39,13 @@ public class MatchSolver
       for (ProductListing pl : this.matchResults.productsListings)
       {
          bestIndex = bestIndex + 1;
-         if (MatchSolver.isSameManufacturer(pl.product,listing))  // Is the same manufacturer then is a candidate, to look more into it ..
+         ResultSameManufacturer res = MatchSolver.isSameManufacturer(pl.product,listing);
+         if (res.found==true)  // Is the same manufacturer then is a candidate, to look more into it ..
          {
             ResultSameModel result = MatchSolver.isSameModel(pl.product,listing);
             if (result.found)
             {
+              listing._checkPrice = res.checkPrice; // Flag to later check this listing by it's price if true
               this.matchResults.productsListings.get(bestIndex).listings.add(listing);
               return; // No need to look further because of the unique property base on Manufacturer+model (so it will not be a better matching ahead)
             }
@@ -57,6 +59,10 @@ public class MatchSolver
 
   }
 
+  public void checkListingsbyPrice()
+  {
+    
+  }
  /**
  * Checks if the listing is the same model as a product, pre-condition, asumming we already check that there are from the same manufacturer
  */
@@ -82,11 +88,9 @@ public class MatchSolver
 
       if (wordsFound!=0 && wordsFound>=modelParts.length) // we found all words from the model in the listing
       {
-
           result.found= true;
           return result; // Is the same model
       }
-
       // If we got here, we have to consider another possibility is that the compound model can be in just a whole word
       // Example:  model : A3100 IS     ... can appear in a listing as   A3100IS, but just if the model has more than one word
       // But model : 130 IS  , Could also be found in SD1300IS by mistake, it has to deal with this cases too
@@ -110,10 +114,10 @@ public class MatchSolver
   /**
   * Checks if a listing is from the same manufacturer as the product , based on different criteria
   */
-  public static  boolean isSameManufacturer(Product product, Listing listing)
+  public static  ResultSameManufacturer isSameManufacturer(Product product, Listing listing)
   {
-       // Change logic, to first check the current manufacturer of listing exists in the title is that the case
-       // then search product.manufacturer only in the listing manufacturer, if not, search it in the title
+     ResultSameManufacturer result = new ResultSameManufacturer();
+
      String[] listingParts = listing.title.split("\\b+");
      String[] productManufacturerParts = product.manufacturer.split("\\s+");
      String[] listingManufacturerParts = listing.manufacturer.split("\\s+");
@@ -129,66 +133,29 @@ public class MatchSolver
      }
      countProductsInListings = countWordOcurrences(productManufacturerParts,listingParts, 1.0);
 
-     if (countInManufacturers == productManufacturerParts.length) return true;
+     if (countInManufacturers == productManufacturerParts.length) { result.found = true; return result; }
      if(listing.manufacturer.isEmpty())
      {
-       if (countProductsInListings== productManufacturerParts.length) return true;
+       if (countProductsInListings== productManufacturerParts.length) { result.found = true; return result; }
      }
 
-     if (countInListings==listingManufacturerParts.length)  return false ; // By transitive propoerty cannot be true because of previous conditions
+     if (countInListings==listingManufacturerParts.length) { result.found = false; return result; }// By transitive propoerty cannot be true because of previous conditions
 
      if (countInListings==0) // the manufacturer in listing does not appear in title
      {
         // It means that the manufacturer probably is not set correctly in the listing. So by heuristic we will search in the title
-      if (countProductsInListings== productManufacturerParts.length) return true;
+        // But maybe it is a accesory so will checkPRice = true to check later
+      if (countProductsInListings== productManufacturerParts.length) { result.found = true; result.checkPrice=true; return result; }
      }
 
-    return false; // If you get here, there are not from the same manufacturer
+    result.found = false; return result;  // If you get here, there are not from the same manufacturer
   }
-  /**
-  * Checks in a word ,  how many of the strings in modelWords exists, but IN ORDER and side by side, consecutive
-  * Looking for  130 IS    in  SA130AFIS   will return 1  SA  130  AF IS   , because 130 and IS are not consecutive, will only find 130
-  * Looking for  130 IS    in  SD130IS    will return 2  SD  130  IS
-  * Looking for 130 IS     in SD1300IS    will return 0 ,   SD 1300 IS  .. because it will not found the first token (130)
-  */
-  // public static  int countWordOcurrences(String [] listOfWords,String word)
-  // {
-  //    int count=0;
-  //    String temp = word.toLowerCase();
-  //    String [] tokens =  temp.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-  //    int nextIndex=-1;
-  //   // First check if we can find the first word in tokens
-  //    for (int j=0; j< tokens.length; j++)
-  //    {
-  //       if (listOfWords[0].toLowerCase().equals(tokens[j].toLowerCase()))
-  //       {
-  //         nextIndex = j+1;
-  //         count=1;
-  //         break;
-  //       }
-  //    }
-  //    // If we did not found the first word, then return count or zero, no need to continue
-  //    if (count==0)  return 0;
-  //
-  //    // Search for the other words in listOfWords but in order in the tokens array
-  //    for(int i=1; i<listOfWords.length; i++)
-  //    {
-  //       // rest of words has to start in nextIndex
-  //       if (listOfWords[i].toLowerCase().equals(tokens[nextIndex].toLowerCase()))
-  //       {
-  //         count++;
-  //         nextIndex = nextIndex + 1;
-  //       }
-  //       else
-  //       {
-  //         break; // They are not consecutive , just return what ever it count consecutive
-  //       }
-  //     }
-  //    return count;
-  // }
 
   /**
   * Checks in a word ,  how many of the strings in modelWords exists
+  * Looking for  130 IS    in  SA130AFIS   will return 1
+  * Looking for  130 IS    in  SD130IS    will return 2
+  * Looking for 130 IS     in SD1300IS    will return 0 ,
   */
   public static  int countWordOcurrences(String [] listOfWords,String word)
   {
@@ -244,6 +211,47 @@ public class MatchSolver
      }
      return count;
   }
+  /**
+  * Checks in a word ,  how many of the strings in modelWords exists, but IN ORDER and side by side, consecutive
+  * Looking for  130 IS    in  SA130AFIS   will return 1  SA  130  AF IS   , because 130 and IS are not consecutive, will only find 130
+  * Looking for  130 IS    in  SD130IS    will return 2  SD  130  IS
+  * Looking for 130 IS     in SD1300IS    will return 0 ,   SD 1300 IS  .. because it will not found the first token (130)
+  */
+  // public static  int countWordOcurrences(String [] listOfWords,String word)
+  // {
+  //    int count=0;
+  //    String temp = word.toLowerCase();
+  //    String [] tokens =  temp.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
+  //    int nextIndex=-1;
+  //   // First check if we can find the first word in tokens
+  //    for (int j=0; j< tokens.length; j++)
+  //    {
+  //       if (listOfWords[0].toLowerCase().equals(tokens[j].toLowerCase()))
+  //       {
+  //         nextIndex = j+1;
+  //         count=1;
+  //         break;
+  //       }
+  //    }
+  //    // If we did not found the first word, then return count or zero, no need to continue
+  //    if (count==0)  return 0;
+  //
+  //    // Search for the other words in listOfWords but in order in the tokens array
+  //    for(int i=1; i<listOfWords.length; i++)
+  //    {
+  //       // rest of words has to start in nextIndex
+  //       if (listOfWords[i].toLowerCase().equals(tokens[nextIndex].toLowerCase()))
+  //       {
+  //         count++;
+  //         nextIndex = nextIndex + 1;
+  //       }
+  //       else
+  //       {
+  //         break; // They are not consecutive , just return what ever it count consecutive
+  //       }
+  //     }
+  //    return count;
+  // }
 
 
 }
