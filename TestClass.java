@@ -265,7 +265,7 @@ public class TestClass
 
 
       boolean expected =  true;
-      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l,0.9);
 
       if (expected == result.found)
       {
@@ -291,7 +291,7 @@ public class TestClass
 
 
       boolean expected =  false;
-      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l,0.9);
 
       if (expected == result.found)
       {
@@ -316,7 +316,7 @@ public class TestClass
 
 
       boolean expected =  false;
-      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l,0.9);
 
       if (expected == result.found)
       {
@@ -342,7 +342,7 @@ public class TestClass
 
 
       boolean expected =  true;
-      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l,0.9);
 
       if (expected == result.found)
       {
@@ -368,7 +368,7 @@ public class TestClass
 
 
       boolean expected =  true;
-      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l,0.9);
 
       if (expected == result.found)
       {
@@ -393,7 +393,7 @@ public class TestClass
 
 
       boolean expected =  false;
-      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l);
+      ResultSameManufacturer result = MatchSolver.isSameManufacturer(p,l,0.9);
 
       if (expected == result.found)
       {

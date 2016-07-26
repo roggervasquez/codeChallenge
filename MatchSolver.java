@@ -1,5 +1,6 @@
 
 import java.util.*;
+import java.lang.Math;
 
 /**
  * Class that has all logic for solving the matching problem
@@ -31,15 +32,17 @@ public class MatchSolver
  /**
  * The most important method, is the one that decides if a listing matches to a product, and if matches in manufacturer
  * and model it decides that is the best matching
+ * Similarity is used only for detecting if sameManufacturer, in case of misspelled manufacturer in the listing title, it has to
+ * very similar >=0.9
  */
-  public void matchListing(Listing listing)
+  public void matchListing(Listing listing,double similarity)
   {
       int bestIndex =-1;  // keeps track which index of the productsListing is the best match so far.
       double bestScore =0.0;
       for (ProductListing pl : this.matchResults.productsListings)
       {
          bestIndex = bestIndex + 1;
-         ResultSameManufacturer res = MatchSolver.isSameManufacturer(pl.product,listing);
+         ResultSameManufacturer res = MatchSolver.isSameManufacturer(pl.product,listing,similarity);
          if (res.found==true)  // Is the same manufacturer then is a candidate, to look more into it ..
          {
             ResultSameModel result = MatchSolver.isSameModel(pl.product,listing);
@@ -59,9 +62,51 @@ public class MatchSolver
 
   }
 
-  public void checkListingsbyPrice()
+  private double getAverageByCurrency (ArrayList <Listing> listings, String currency)
   {
-    
+    double valueAccumulator = 0.0;
+    int count =0;
+    for (Listing listing : listings)
+    {
+       if (listing.currency.toLowerCase().equals(currency.toLowerCase()) && listing._checkPrice==false  )
+       {
+            valueAccumulator = valueAccumulator + Double.parseDouble(listing.price);
+            count++;
+       }
+    }
+    if (count > 0 )
+          return (valueAccumulator / count);
+
+    else
+          return 1.0;
+  }
+  public void checkListingsbyPrice(double minValue, double maxValue)
+  {
+    ArrayList<ProductListing> productsListings = this.matchResults.productsListings;
+
+    for (int i = 0; i < productsListings.size(); i++)
+    {
+      ProductListing productListing = productsListings.get(i);
+      if (productListing.listings.size()>0)   // The product has listings.
+      {
+        for (int j=productListing.listings.size()-1; j>=0; j--) // Check each listing for the _checkPrice flag but in reverse so no issues when removing items
+        {
+           Listing listing = productListing.listings.get(j);
+           // Check if listing needs to be check by price
+           if (listing._checkPrice)
+           {
+               double averagePrice = this.getAverageByCurrency(productListing.listings, listing.currency);
+               double currentListingPrice = Double.parseDouble(listing.price);
+               // Calculate the difference of the current listing price vs the Average price of those listings with same currency
+               double rangeValue = Math.abs(averagePrice - currentListingPrice) / averagePrice;
+               if (!(rangeValue>=minValue && rangeValue <=maxValue)) // if the range value is out of limits, then remove it is false positive big difference in price
+                {
+                     productListing.listings.remove(j);
+                }
+           }
+        }
+      }
+    }
   }
  /**
  * Checks if the listing is the same model as a product, pre-condition, asumming we already check that there are from the same manufacturer
@@ -99,11 +144,10 @@ public class MatchSolver
         for (int j=1; j<listingParts.length; j++)
           {
             int countFound = MatchSolver.countWordOcurrences(modelParts,listingParts[j].toLowerCase());
-
-            if(countFound==modelParts.length)
+            if(countFound==modelParts.length) // We found all words of the model
             {
               result.found= true;
-              return result; // Is the same model;  // Found the model inside a compound  word in the listing
+              return result; // Is the same model; Found the model inside a compound  word in the listing
             }
           }
       }
@@ -114,7 +158,7 @@ public class MatchSolver
   /**
   * Checks if a listing is from the same manufacturer as the product , based on different criteria
   */
-  public static  ResultSameManufacturer isSameManufacturer(Product product, Listing listing)
+  public static  ResultSameManufacturer isSameManufacturer(Product product, Listing listing, double similarity)
   {
      ResultSameManufacturer result = new ResultSameManufacturer();
 
@@ -128,10 +172,10 @@ public class MatchSolver
 
      if (!listing.manufacturer.isEmpty())
      {
-       countInManufacturers = countWordOcurrences(productManufacturerParts, listingManufacturerParts, 1.0);
-       countInListings = countWordOcurrences(listingManufacturerParts, listingParts, 0.9);
+       countInManufacturers = countWordOcurrences(productManufacturerParts, listingManufacturerParts, 1.0); // similarity of 1 means EQUAL
+       countInListings = countWordOcurrences(listingManufacturerParts, listingParts, similarity); // pass the similarity defined outside1
      }
-     countProductsInListings = countWordOcurrences(productManufacturerParts,listingParts, 1.0);
+     countProductsInListings = countWordOcurrences(productManufacturerParts,listingParts, 1.0); //similarity of 1 means EQUAL
 
      if (countInManufacturers == productManufacturerParts.length) { result.found = true; return result; }
      if(listing.manufacturer.isEmpty())

@@ -1,6 +1,6 @@
 *.class
 
-# Result file, do not add to the repo
+# Results and unmatching files, do not add them to the repo
 results.txt
 unmatchlistings.txt
 
@@ -8,7 +8,8 @@ unmatchlistings.txt
 .mtj.tmp/
 
 # Package Files #
-# *.jar
+# *.jar  need to comment to allow to upload the minimal json jar lib
+
 *.war
 *.ear
 

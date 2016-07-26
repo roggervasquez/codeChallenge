@@ -63,11 +63,11 @@ public static void main(String[] args)
                jsonObject = JsonObject.readFrom( strLine );  // Parse the Json Object
                Listing listing = new Listing();
                AppUtils.mapJsonToListing(listing,jsonObject );
-/* ===> */     matchSolver.matchListing (listing);  // Try to match the listing just read from the file, to a product, matchsolver stores results inside
+/* ===> */     matchSolver.matchListing (listing,0.9);  // Try to match the listing just read from the file, to a product, matchsolver stores results inside
            }
            br.close();
            // Lets try to remove some false positives by it's price, all listings with checkPRice=true we will need to check them
-           matchSolver.checkListingsbyPrice();
+           matchSolver.checkListingsbyPrice(0.0,0.20); // Acceptable range of deviation of price
            // if we get to this point, we have processed all listings and try to match them all, so let's get the results
            MatchResults  results = matchSolver.getMatchResults();
            AppUtils.outPutResultsToFile(results.productsListings,"results.txt");
