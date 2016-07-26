@@ -23,21 +23,6 @@ public class ProductListing
       {
         this.product = p;
       }
-      public Product getProduct()
-      {
-        return this.product;
-      }
-      public List<Listing> getListings()
-      {
-        return this.listings;
-      }
-      public void addListing(Listing l)
-      {
-        if (listings!=null)
-        {
-            this.listings.add(l);
-        }
-      }
-
+    
 
 }

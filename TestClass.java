@@ -136,8 +136,7 @@ public class TestClass
      String s2= "DURAGAGDGET";
      double value = Algorithms.similarity( s1,  s2);
      System.out.println("Value:" +value);
-     value = Algorithms.compareStrings(s1,s2);
-     System.out.println("Value:" +value);
+    
      int distance = Algorithms.editDistance(s1,s2);
      System.out.println("Value:" +distance);
 
@@ -414,8 +413,7 @@ public class TestClass
       String title = "Sony T Series DSC-T99 14.1 Megapixel DSC Camera with Super HAD CCD Image Sensor (Silver)";
       String productName = "Sony Cyber-shot DSC-T99";
       System.out.println("Comparing:" + title + " **VS** " + productName);
-      double result = Algorithms.compareStrings(title,productName);
-      System.out.println("REsult:" + result);
+
       String lcs= Algorithms.longestCommonSubstring(title,productName);
       System.out.println("LCS:" + lcs);
       System.out.println("Edit Distance:" + Algorithms.editDistance(title,productName));
@@ -431,8 +429,7 @@ public class TestClass
       String model1 = "DSC-T99";
       String model2 = "DSC T99";
       System.out.println("Comparing:" + model1 + " **VS** " + model2);
-      double result = Algorithms.compareStrings(model1,model2);
-      System.out.println("REsult:" + result);
+
       String lcs= Algorithms.longestCommonSubstring(model1,model2);
       System.out.println("LCS:" + lcs);
       System.out.println("Edit Distance:" + Algorithms.editDistance(model1,model2));
@@ -447,8 +444,7 @@ public class TestClass
       String model1 = "DSC-T99";
       String model2 = "DSCT99";
       System.out.println("Comparing:" + model1 + " **VS** " + model2);
-      double result = Algorithms.compareStrings(model1,model2);
-      System.out.println("REsult:" + result);
+
       String lcs= Algorithms.longestCommonSubstring(model1,model2);
       System.out.println("LCS:" + lcs);
       System.out.println("Edit Distance:" + Algorithms.editDistance(model1,model2));
@@ -463,8 +459,7 @@ public class TestClass
       String model1 = "PDR-M70";
       String model2 = "PDR-M700";
       System.out.println("Comparing:" + model1 + " **VS** " + model2);
-      double result = Algorithms.compareStrings(model1,model2);
-      System.out.println("REsult:" + result);
+
       String lcs= Algorithms.longestCommonSubstring(model1,model2);
       System.out.println("LCS:" + lcs);
       System.out.println("Edit Distance:" + Algorithms.editDistance(model1,model2));
@@ -478,8 +473,7 @@ public class TestClass
       String model1 = "Tough 8000";
       String model2 = "mju Tough 8000";
       System.out.println("Comparing:" + model1 + " **VS** " + model2);
-      double result = Algorithms.compareStrings(model1,model2);
-      System.out.println("REsult:" + result);
+
       String lcs= Algorithms.longestCommonSubstring(model1,model2);
       System.out.println("LCS:" + lcs);
       System.out.println("Edit Distance:" + Algorithms.editDistance(model1,model2));
@@ -492,8 +486,7 @@ public class TestClass
       String model1 = "A3100IS";
       String model2 = "A3100 IS";
       System.out.println("Comparing:" + model1 + " **VS** " + model2);
-      double result = Algorithms.compareStrings(model1,model2);
-      System.out.println("REsult:" + result);
+
       String lcs= Algorithms.longestCommonSubstring(model1,model2);
       System.out.println("LCS:" + lcs);
       System.out.println("Edit Distance:" + Algorithms.editDistance(model1,model2));

@@ -30,9 +30,7 @@ public static void main(String[] args)
    else
    { // has a 3 parameter, can be the option to run the tests
      if (args.length==3)
-     { runTests(args[2]) ; // If appropiate command line parameter 'runtests', then will run some tests.
-       //return;
-     }
+          runTests(args[2]) ; // If appropiate command line parameter 'runtests', then will run some tests.
    }
   //---------------------------------------------------------------------------------------------------------------------------
    MatchSolver matchSolver;
@@ -52,7 +50,7 @@ public static void main(String[] args)
    // to generate a separate file of this listings that were not matched with any product (for debugging purposes)
     try
     {
-          // 0.9 manufacturer similarity and 1.0 = 2/3 of words found in model
+        
            matchSolver =new MatchSolver(listOfProducts); // Instatiate the matchSolver passing the list of products
            FileInputStream fstream = new FileInputStream(args[1]);  // Try to read the listings.txt file
            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));

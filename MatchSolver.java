@@ -38,7 +38,6 @@ public class MatchSolver
   public void matchListing(Listing listing,double similarity)
   {
       int bestIndex =-1;  // keeps track which index of the productsListing is the best match so far.
-      double bestScore =0.0;
       for (ProductListing pl : this.matchResults.productsListings)
       {
          bestIndex = bestIndex + 1;
@@ -80,6 +79,9 @@ public class MatchSolver
     else
           return 1.0;
   }
+  /**
+  * REmoves all listings that has the checkPrice flag = true if they price is far away the average of prices of those listings with specific currency
+  */
   public void checkListingsbyPrice(double minValue, double maxValue)
   {
     ArrayList<ProductListing> productsListings = this.matchResults.productsListings;
@@ -255,47 +257,7 @@ public class MatchSolver
      }
      return count;
   }
-  /**
-  * Checks in a word ,  how many of the strings in modelWords exists, but IN ORDER and side by side, consecutive
-  * Looking for  130 IS    in  SA130AFIS   will return 1  SA  130  AF IS   , because 130 and IS are not consecutive, will only find 130
-  * Looking for  130 IS    in  SD130IS    will return 2  SD  130  IS
-  * Looking for 130 IS     in SD1300IS    will return 0 ,   SD 1300 IS  .. because it will not found the first token (130)
-  */
-  // public static  int countWordOcurrences(String [] listOfWords,String word)
-  // {
-  //    int count=0;
-  //    String temp = word.toLowerCase();
-  //    String [] tokens =  temp.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-  //    int nextIndex=-1;
-  //   // First check if we can find the first word in tokens
-  //    for (int j=0; j< tokens.length; j++)
-  //    {
-  //       if (listOfWords[0].toLowerCase().equals(tokens[j].toLowerCase()))
-  //       {
-  //         nextIndex = j+1;
-  //         count=1;
-  //         break;
-  //       }
-  //    }
-  //    // If we did not found the first word, then return count or zero, no need to continue
-  //    if (count==0)  return 0;
-  //
-  //    // Search for the other words in listOfWords but in order in the tokens array
-  //    for(int i=1; i<listOfWords.length; i++)
-  //    {
-  //       // rest of words has to start in nextIndex
-  //       if (listOfWords[i].toLowerCase().equals(tokens[nextIndex].toLowerCase()))
-  //       {
-  //         count++;
-  //         nextIndex = nextIndex + 1;
-  //       }
-  //       else
-  //       {
-  //         break; // They are not consecutive , just return what ever it count consecutive
-  //       }
-  //     }
-  //    return count;
-  // }
+  
 
 
 }
