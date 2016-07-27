@@ -75,7 +75,6 @@ public class MatchSolver
     }
     if (count > 0 )
           return (valueAccumulator / count);
-
     else
           return 1.0;
   }
@@ -257,7 +256,7 @@ public class MatchSolver
      }
      return count;
   }
-  
+
 
 
 }

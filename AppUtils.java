@@ -23,13 +23,21 @@ public class AppUtils
           if (productListing.listings.size()>0)
           {
             // Use a string builder instead. and need to write the listings.
-            String line = "{\"product_name\":"+ "\""+ productListing.product.product_name +"\"" + "} model:" + productListing.product.model +"\n";
+            String line = "{ \"product_name\":"+ "\""+ productListing.product.product_name +"\" ," + "\"listings\": [" ;
             for (int j=0; j<productListing.listings.size(); j++)
             {
                Listing listing = productListing.listings.get(j);
-               line = line + listing.title + "," + listing.manufacturer +","+ listing.price + "," + listing.currency+ "\n";
+               JsonValue title = Json.value(listing.title);
+               line = line + "{" +
+                      "\"title\":" + title.toString() + ","  +
+                      "\"manufacturer\": \"" + listing.manufacturer +"\"," +
+                      "\"currency\": \"" + listing.currency +"\"," +
+                      "\"price\": \"" +listing.price +"\"}"  ;
 
+               if (j!=productListing.listings.size()-1)
+                    line = line +",";
             }
+            line = line + "] }" ; //Ends the Json array of listings and the Json object
             bufferWriter.write(line);
             bufferWriter.newLine();
           }
@@ -40,7 +48,7 @@ public class AppUtils
        {
            System.err.println("Error Generating  file: " + e.getMessage());
        }
-  }
+  } 
   /**
    * This method  outputs the results of the matching into 1 file, the listings matched
    */
