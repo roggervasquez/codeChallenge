@@ -23,20 +23,20 @@ public class TestClass
            this.testIsSameModel3();
            this.testIsSameModel4();
 
-           //this.testSimilarity1();
-         //  this.testDifferentManufacturer1();
-          this.testCompareStrings1();
-          this.testCompareStrings2();
-          this.testCompareStrings3();
-          this.testCompareStrings4();
-          this.testCompareStrings5();
-          this.testCompareStrings6();
+           this.testCompareStrings1();
+           this.testCompareStrings2();
+           this.testCompareStrings3();
+           this.testCompareStrings4();
+           this.testCompareStrings5();
+           this.testCompareStrings6();
 
-            this.testCoutOcurrences1();
-            this.testCoutOcurrences2();
-            this.testCoutOcurrences3();
-            this.testCoutOcurrences4();
-            this.testCoutOcurrences5();
+           this.testSimilarity1();
+
+           this.testCoutOcurrences1();
+           this.testCoutOcurrences2();
+           this.testCoutOcurrences3();
+           this.testCoutOcurrences4();
+           this.testCoutOcurrences5();
 
 
    }
@@ -136,7 +136,7 @@ public class TestClass
      String s2= "DURAGAGDGET";
      double value = Algorithms.similarity( s1,  s2);
      System.out.println("Value:" +value);
-    
+
      int distance = Algorithms.editDistance(s1,s2);
      System.out.println("Value:" +distance);
 
